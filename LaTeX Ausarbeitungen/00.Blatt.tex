@@ -1,0 +1,118 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage[german]{babel}
+\selectlanguage{german}
+\usepackage[T1]{fontenc}
+\usepackage[parfill]{parskip}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{tabto}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm} %für das \qed Symbol. Außerdem gibt es eine proof environment
+\usepackage{graphicx}
+\usepackage{listings} % für code im Text
+\usepackage{tikz}
+\usepackage[utf8]{inputenc}
+\usepackage{algpseudocode}
+\newcommand{\LD}{\langle}
+\newcommand{\RD}{\rangle}
+ \usepackage[utf8]{inputenc}
+\usepackage{geometry} %to change the site margin
+\usepackage[justification=centering]{caption}
+\geometry{left=3cm, right=2cm, top=2cm, bottom=2cm}
+\theoremstyle{remark}
+\newtheorem*{Behauptung}{Behauptung}
+\renewcommand\thesection{Aufgabe \arabic{section}}
+\renewcommand\thesubsection{\alph{subsection})}
+\usepackage{mathtools}
+\newcommand\inductioneq{\stackrel{\mathclap{\normalfont\mbox{I.B.}}}{=}}
+
+
+\title{Übung 0: Algorithmen und Datenstrukturen}
+\author{Valerij Dobler (7068135)}
+\date{06. November 2020}
+
+\begin{document}
+\maketitle
+\part{Präsenzaufgaben}
+
+\section{}
+
+Sie haben drei Algorithmen für dasselbe Problem mit den Laufzeiten $10^6(log_{10}(n) + 1)$, $1000·n^2$ und $2^n$. Wie lange laufen diese drei Algorithmen auf Eingaben der Größe $n_1 = 10$,
+$n_2 = 20$ und $n_3 = 75$ bei $10^5$ Rechenschritten pro Sekunde?
+
+\begin{center}
+    \begin{tabular}{c|c|c|c}
+        $n_i$ & $10$ & $20$ & $75$ \\ \hline
+        $10^6(log_{10}(n) + 1)$ & $20$ & ca. $23,01$ & ca. $28,75$ \\ \hline
+        $1000·n^2$ & $1$ & $4$ & $56,25$ \\ \hline
+        $n^2$ & $10^{-3}$ & $4*10^{-3}$ & $ 0,05625$ \\
+    \end{tabular}
+\end{center}
+
+\section{}
+
+Gegeben sei die Eingabe zweier positiver ganzer Zahlen $n$ und $d$.
+
+\subsection{} Beschreiben Sie einen Algorithmus in Pseudocode, der das Ergebnis der ganzzahligen
+Division $n$ div $d$ (ohne Verwendung der Division) berechnet.
+
+\newpage
+
+\begin{center}
+\begin{algorithmic}
+\Require {d > 0}
+\Function{Division}{n, d}
+    \If {d > n}
+        \Return 0
+    \EndIf
+    \State $rest \gets n$
+    \State $count \gets 0$
+    \While {d > rest}
+        \State $count \gets count + 1$
+        \State $rest \gets rest - d$
+    \EndWhile
+    
+    
+    \Return count
+\EndFunction
+\end{algorithmic}
+\end{center}
+
+\subsection{} Beweisen Sie die Korrektheit Ihres Algorithmus mit Hilfe einer geeigneten Schleifeninvariante.
+
+\begin{Behauptung}
+Sei $n = r + d \cdot count$.
+\end{Behauptung}
+
+\begin{proof}
+Durch Schleifeninvariante
+\begin{enumerate}
+    \item Initialisierung: Am Anfang gilt $r := n, count := 0$ daraus folgt $n = n + d \cdot 0 = n$
+    \item Annahme: In Iteration $i$ soll gelten: $n = r + (d \cdot i)$.
+    \item Schleifenschritt:
+    In Iteration $i + 1$ gilt $r + (d \cdot (i + 1)) = r + (d \cdot i + d) = r + d \cdot i + d = r$
+    \item Terminierung: 
+\end{enumerate}
+\end{proof}
+\subsection{} Analysieren Sie die worst-case Laufzeit des formulierten Algorithmus.
+
+Wir können die Laufzeit maximieren, dadurch, dass wir möglichst häufig in der While-Schleife laufen. Das können wir erreichen, wenn d besonders klein wird, aber größer 
+
+\end{document}
+
+%% Cheat Sheet
+%\begin{Behauptung}
+%	Sei $(\Omega,P)$ ein endlicher Wahrscheinlichkeitsraum. 
+%	
+%	Dann gilt $\forall A\subset B\subset\Omega : P(B\setminus A)=P(B)-P(A)$
+%	
+%	Insbesondere gilt $P(A)\leq P(B)$
+%\end{Behauptung}
+%
+%\begin{proof}
+%Es gilt $B = A\cup (B\setminus A)$ und $A\cap (B\setminus A) =\emptyset$. Nach \textbf{b)} gilt somit $P(B)=P(A)+P(B\setminus A)$. Umgestellt folgt $P(B\setminus A)=P(B)-P(A)$.
+%
+%$P(A)\leq P(B)$ folgt aus oben und $P(B\setminus A)\geq 0$.
+%\end{proof}

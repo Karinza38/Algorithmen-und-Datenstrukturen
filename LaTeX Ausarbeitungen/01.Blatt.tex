@@ -1,0 +1,175 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage[german]{babel}
+\selectlanguage{german}
+\usepackage[T1]{fontenc}
+\usepackage[parfill]{parskip}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{tabto}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm} %für das \qed Symbol. Außerdem gibt es eine proof environment
+\usepackage{graphicx}
+
+\usepackage{listings} % für code im Text
+\usepackage{lstautogobble} % für Pseudo code wie im VL-Skript
+\usepackage[ruled,vlined]{algorithm2e}
+\lstnewenvironment{algorithm}[1][]{
+    \lstset{
+        autogobble        = true,
+        columns           = flexible,
+        commentstyle      = \itshape\color{gray},
+        escapeinside      = {(*@}{@*)},
+        frame             = tb,
+        mathescape        = true,
+        morecomment       =[l]{//},
+        numbers           = left,
+        numberstyle       = \small,
+        texcl             = true,
+        xleftmargin       = 2em,
+        framexleftmargin  = 2em,
+        morekeywords = {
+                else,
+                for,
+                if,
+                return,
+                then,
+                while,
+            },
+        #1
+    }
+}{}
+\SetKw{KwBy}{by}
+
+\usepackage{tikz}
+\usepackage[utf8]{inputenc}
+\usepackage{algpseudocode}
+\newcommand{\LD}{\langle}
+\newcommand{\RD}{\rangle}
+ \usepackage[utf8]{inputenc}
+\usepackage{geometry} %to change the site margin
+\usepackage[justification=centering]{caption}
+\geometry{left=3cm, right=2cm, top=2cm, bottom=2cm}
+\theoremstyle{remark}
+\newtheorem*{Behauptung}{Behauptung}
+\renewcommand\thesection{Aufgabe \arabic{section}}
+\renewcommand\thesubsection{\alph{subsection})}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "l" column type
+\newcommand\inductioneq{\stackrel{\mathclap{\normalfont\mbox{I.B.}}}{=}}
+
+
+\title{Übung 1: Algorithmen und Datenstrukturen}
+\author{Valerij Dobler (7068135)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{}
+
+Betrachten Sie zwei Algorithmen $A$ und $B$ für das gleiche Problem. Algorithmus $A$ benötigt bei einer Eingabe der Größe $n$ genau $2n^2$ Basisoperationen, während Algorithmus $B$ genau $100n \ceil{ log_2 n}$ Basisoperationen benötigt. Betrachten Sie zwei Computer $C_1$ und $C_2$. Computer $C_1$ (Supercomputer) kann pro Sekunde $4,16 \cdot 10^{17}$ Basisoperationen durchführen. Computer $C_2$ (Handy) kann hingegen nur $3 \cdot 10^{11}$ Basisoperationen pro Sekunde durchführen.
+
+\subsection{}
+
+Wie lange braucht Algorithmus $A$ auf beiden Computern, um ein Problem der Größe $n_1 = 200, n2 = 2.7 \cdot 10^9$ und $n^3 = 10^{16}$ zu lösen? (Lösungen in Sekunden)
+
+\begin{center}
+    \begin{tabular}{C|C|C|C}
+        n_i & 200 & 2,7 \cdot 10^9 & 10^{16} \\ \hline
+        C_1 & \text{ca. } 1,92 \cdot 10^{-13} & \text{ca. } 35 & \text{ca. } 4,81 \cdot 10^{14} \\ \hline
+        C_2 & \text{ca. } 2,67 \cdot 10^{-7} & 4,86 \cdot 10^7 & \text{ca. } 6,67 \cdot 10^{20} \\
+    \end{tabular}
+\end{center}
+
+
+\subsection{}
+
+Wie lange braucht Algorithmus $B$ auf beiden Computern, um ein Problem der Größe $n_1 = 200, n2 = 2.7 \cdot 10^9$ und $n^3 = 10^{16}$ zu lösen?
+
+\begin{center}
+    \begin{tabular}{C|C|C|C}
+        n_i & 200 & 2,7 \cdot 10^9 & 10^{16} \\ \hline
+        C_1 & \text{ca. } 3,85 \cdot 10^{-13} & \text{ca. } 2,08 \cdot 10^-5  & \text{ca. } 130 \\ \hline
+        C_2 & \text{ca. } 5,33 \cdot 10^{-7} & 28,8 & 1,8 \cdot 10^{8} \\
+    \end{tabular}
+\end{center}
+
+\subsection{}
+
+Für welche Problemgrößen ist Algorithmus $A$ schneller und für welche ist Algorithmus $B$ schneller, wenn beide Algorithmen auf dem gleichen Computer laufen?
+
+Algorithmus $A$ ist für die Eingabe $n = 200$ schneller. Bei den größeren Eingaben ist jeweils Algorithmus $B$ schneller.  
+
+\section{}
+
+Betrachten Sie das Problem {\it Zweit-Kleinstes-Element}
+\begin{itemize}
+    \item {\it Eingabe:} Ein Array $A[1, \ldots, n]$ von $n \geq 2$ Zahlen
+    
+    \item {\it Ausgabe:} Ein Index $i$, sodass es einen Index $j \neq i$ gibt mit $A[j] \leq A[i]$ und für alle Indizes $k \in \{ 1, 2, \ldots , n \} \setminus \{ j \}$ gilt $A[k] \geq A[i]$.
+
+\end{itemize}
+
+\subsection{}
+
+Beschreiben Sie in Pseudocode einen Algorithmus der das Problem {\it Zweit-Kleinstes-Element} löst. (3 Punkte) \\
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwResult{Das zweit kleinste Element}
+ j $\gets$ 1\; % Index vom kleinsten Element
+ i $\gets$ 1\; % Index vom zweit-kleinsten Element
+ \For{$c \gets 2$ \KwTo $A.$length \KwBy $c = c + 1$}{
+    \uIf{$A[c] \leq A[j]$}{ % Wert von aktuell betrachtetem Index (c) <= dem vom Index j (kleinster Wert)  ist
+        $i \gets j$\;
+        $j \gets c$\;
+    }
+    \uElseIf {$i = j$}{
+        $j \gets c$
+    }
+ }
+ \Return $i$\;
+\caption{ZweitKleinstesElement($A$)}
+\end{algorithm}
+
+
+\subsection{} Beweisen Sie die Korrektheit Ihres Algorithmus mit Hilfe einer geeigneten Schleifeninvariante.
+
+\begin{Behauptung}
+$\forall k \in [1, \ldots, c]: A[i] \leq A[j] \leq A[k]$, wobei $c$ der Index vom zuletzt-besuchten Eintrag in der For-Schleife ist.
+\end{Behauptung}
+
+\begin{proof}
+Durch Schleifeninvariante
+\begin{enumerate}
+    \item Initialisierung: 
+    \item Annahme: In Iteration $i$ soll gelten: 
+    \item Schleifenschritt:
+    In Iteration $i + 1$ gilt 
+    \item Terminierung: 
+\end{enumerate}
+\end{proof}
+\subsection{} Analysieren Sie die worst-case Laufzeit des formulierten Algorithmus.
+
+
+
+\end{document}
+
+%% Cheat Sheet
+%\begin{Behauptung}
+%	Sei $(\Omega,P)$ ein endlicher Wahrscheinlichkeitsraum. 
+%	
+%	Dann gilt $\forall A\subset B\subset\Omega : P(B\setminus A)=P(B)-P(A)$
+%	
+%	Insbesondere gilt $P(A)\leq P(B)$
+%\end{Behauptung}
+%
+%\begin{proof}
+%Es gilt $B = A\cup (B\setminus A)$ und $A\cap (B\setminus A) =\emptyset$. Nach \textbf{b)} gilt somit $P(B)=P(A)+P(B\setminus A)$. Umgestellt folgt $P(B\setminus A)=P(B)-P(A)$.
+%
+%$P(A)\leq P(B)$ folgt aus oben und $P(B\setminus A)\geq 0$.
+%\end{proof}
