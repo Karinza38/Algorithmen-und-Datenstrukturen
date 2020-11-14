@@ -203,10 +203,19 @@ Zeile & Laufzeit \\ \hline
 
 Da wir immer über jedes Element des Arrays iterieren müssen, ist die asymptotische Laufzeit gleichzeitig die best- und worst-case Laufzeit unseres Algorithmus. Die Laufzeit ist nicht ausschlaggebend variabel.
 
-\newpage
 \section{}
 
-sZeigen Sie, dass $(ln(x))^k = O(x^\epsilon).$ Hierbei sind $k$, $\epsilon$ Konstanten größer Null. \\ {\it Ein möglicher Hinweis: Zeigen Sie die Aussage zunächst für k = 1.}
+Zeigen Sie, dass $(ln(x))^k = O(x^\epsilon).$ Hierbei sind $k$, $\epsilon$ Konstanten größer Null. \\ {\it Ein möglicher Hinweis: Zeigen Sie die Aussage zunächst für k = 1.}
+
+\begin{proof}
+\[
+lim_{x\rightarrow \infty}\frac{x^\epsilon}{(ln(x))^k} 
+= lim_{x\rightarrow \infty}\frac{e^{x^\epsilon}}{e^{(ln(x))^k}} 
+= lim_{x\rightarrow \infty}\frac{e^{x^\epsilon}}{x \cdot k}
+\stackrel{(*)}{\rightarrow} \infty
+\]
+(*) Da $f(x) = e^{x^\epsilon}$ exponentiell wächst und $g(x)=x \cdot k$ hingegen nur linear.
+\end{proof}
 
 \section{}
 
@@ -220,8 +229,85 @@ Bsp.: \\
 \[
 f_4(n) < f_2(n) < f_6(n) < f_3(n) < f_1(n) < f_7(n) < f_5(n)
 \]
-Begründung: \\
+\begin{Behauptung}
+$f_4 \in o(f_2) \iff e^{log_2(n)} \in o(n \cdot ln(n))$
+\end{Behauptung}
+\begin{proof}
+\[
+f_4(n) = e^{log_2(n)} = e^\frac{ln(n)}{ln(2)} = n^\frac{1}{ln(2)}, \quad f_2(n) = n \cdot ln(n)
+\]
+\[
+lim_{n\rightarrow \infty}\frac{f_2(n)}{f_4(n)}
+= lim_{n\rightarrow \infty}\frac{n \cdot ln(n)}{n^\frac{1}{ln(2)}}
+= lim_{n\rightarrow \infty}n^{1-\frac{1}{ln(2)}} \cdot ln(n) \rightarrow \infty
+\]
+\end{proof}
 
+\begin{Behauptung}
+$f_2 \in o(f_6) \iff n \cdot ln(n) \in o(n^\frac{3}{2})$
+\end{Behauptung}
+\begin{proof}
+\[
+f_2(n) = n \cdot ln(n), \quad f_6(n) = n^\frac{3}{2} = n^1 \cdot n^\frac{1}{2} = n \cdot \sqrt{n}
+\]
+\[
+lim_{n\rightarrow \infty}\frac{f_6(n)}{f_2(n)}
+= lim_{n\rightarrow \infty}\frac{n \cdot \sqrt{n}}{n \cdot ln(n)}
+= lim_{n\rightarrow \infty}\frac{\sqrt{n}}{ln(n)}
+\]
+Da beide Terme divergieren, kann man nach L'Hôspital beide Terme ableiten und die Grenzwerte stimmen überein.
+\[
+\stackrel{\frac{d}{dn}}{=} lim_{n\rightarrow \infty}\frac{n}{2\sqrt{n}}
+\stackrel{\frac{d}{dn}}{=} lim_{n\rightarrow \infty}\frac{2\sqrt{n}}{2}
+= lim_{n\rightarrow \infty}\sqrt{n}
+\rightarrow \infty
+\]
+
+\end{proof}
+\\
+\begin{Behauptung}
+$f_6 \in o(f_3) \iff n^\frac{3}{2} \in o(2^n)$
+\end{Behauptung}
+\begin{proof}
+\[
+lim_{n\rightarrow \infty}\frac{f_3(n)}{f_6(n)}
+= lim_{n\rightarrow \infty}\frac{2^n}{n^\frac{3}{2}}
+\]
+
+\end{proof}
+
+\begin{Behauptung}
+$f_3 \in o(f_1) \iff 2^n \in o(3^n)$
+\end{Behauptung}
+\begin{proof}
+\[
+lim_{n\rightarrow \infty}\frac{f_1(n)}{f_3(n)}
+= lim_{n\rightarrow \infty}\frac{3^n}{2^n}
+
+\]
+\end{proof}
+
+\begin{Behauptung}
+$f_1 \in o(f_7) \iff 3^n \in o(n!)$
+\end{Behauptung}
+\begin{proof}
+\[
+lim_{n\rightarrow \infty}\frac{f_7(n)}{f_1(n)}
+= lim_{n\rightarrow \infty}\frac{n!}{3^n}
+
+\]
+\end{proof}
+
+\begin{Behauptung}
+$f_7 \in o(f_5) \iff n! \in o(n^n)$
+\end{Behauptung}
+\begin{proof}
+\[
+lim_{n\rightarrow \infty}\frac{f_5(n)}{f_7(n)}
+= lim_{n\rightarrow \infty}\frac{n^n}{n!}
+
+\]
+\end{proof}
 
 \end{document}
 
