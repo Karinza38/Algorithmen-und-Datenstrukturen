@@ -23,16 +23,21 @@ public class ZweitKleinstes
 	public static int indexVomZweitKleinstenElement(int[] arr)
 	{
 		int j = 0; // kleinster Index
-		int i = 0; // zweit-kleinster Index
+		int i = 1; // zweit-kleinster Index
 
-		for (int c = 1; c < arr.length; ++c)
+		if (arr[j] > arr[i])
+		{
+			j = 1;
+			i = 0;
+		}
+		for (int c = 2; c < arr.length; ++c)
 		{
 			if (arr[c] <= arr[j])
 			{
 				i = j;
 				j = c;
 			}
-			else if (i == j)
+			else if (arr[c] < arr[i])
 			{
 				i = c;
 			}

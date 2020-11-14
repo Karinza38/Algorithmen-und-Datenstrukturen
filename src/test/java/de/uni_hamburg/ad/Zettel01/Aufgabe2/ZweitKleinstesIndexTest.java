@@ -1,5 +1,6 @@
 package de.uni_hamburg.ad.Zettel01.Aufgabe2;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,14 +9,12 @@ class ZweitKleinstesIndexTest
 {
 	@Test
 	public void testeZweitKleinste_einElemente() {
-		// Arrange
-		int[] arr = new int[] {42};
+		Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+			int[] arr = new int[] {42};
 
-		// Act
-		int resultat = ZweitKleinstes.indexVomZweitKleinstenElement(arr);
-
-		// Assert
-		assertEquals(0, resultat);
+			// Act
+			int resultat = ZweitKleinstes.indexVomZweitKleinstenElement(arr);
+		});
 	}
 
 	@Test
@@ -27,7 +26,7 @@ class ZweitKleinstesIndexTest
 		int resultat = ZweitKleinstes.indexVomZweitKleinstenElement(arr);
 
 		// Assert
-		assertEquals(0, resultat);
+		assertEquals(1, resultat);
 	}
 
 	@Test
@@ -63,7 +62,19 @@ class ZweitKleinstesIndexTest
 		int resultat = ZweitKleinstes.indexVomZweitKleinstenElement(arr);
 
 		// Assert
-		assertEquals(1, resultat);
+		assertEquals(0, resultat);
+	}
+
+	@Test
+	public void testeZweitKleinste_larsesTest() {
+		// Arrange
+		int[] arr = new int[] {1, 5, 3};
+
+		// Act
+		int resultat = ZweitKleinstes.indexVomZweitKleinstenElement(arr);
+
+		// Assert
+		assertEquals(2, resultat);
 	}
 
 	@Test

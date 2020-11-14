@@ -94,25 +94,33 @@ Beschreiben Sie in Pseudocode einen Algorithmus der das Problem {\it Zweit-Klein
 
 \begin{algorithm}[H]
 \SetAlgoLined
-
 \KwResult{Das zweit kleinste Element}
- $min \gets 1$\; % Index vom kleinsten Element
- $i \gets 1$\; % Index vom zweit-kleinsten Element
- %\For{$c \gets 2$ \KwTo $A.$length \KwBy $c = c + 1$}{
- $c \gets 2$\;
- \While{$c <= A.$length}{
+ \uIf{$A[1] \; \leq\; A[2]$}{
+    $min \gets 1$\; % Index vom kleinsten Element
+    $i \gets 2$\; % Index vom zweit-kleinsten Element
+ }
+ \uElse{
+    $min \leftrightarrow i$\; % tauschen
+ }
+ $c \gets 3$\;
+ \While{$c <= length(A)$}{
     \uIf{$A[c] \leq A[min]$}{ % Wert von aktuell betrachtetem Index (c) <= dem vom Index j (kleinster Wert)  ist
         $i \gets min$\;
         $min \gets c$\;
     }
-    \uElseIf {$i = min$}{
-        $min \gets c$
-    }
+     \uElseIf{$A[c] < A[i]$}{
+        $i \gets c$\;
+     }
+     \uElse{
+        NOP\;
+     }
     $c++$\;
  }
  \Return $i$\;
 \caption{ZweitKleinstesElement($A$)}
 \end{algorithm}
+\emph{NOP: No-Operation}
+
 
 \subsection{} Beweisen Sie die Korrektheit Ihres Algorithmus mit Hilfe einer geeigneten Schleifeninvariante.
 
@@ -127,17 +135,46 @@ $A[i] = min\{\; A[j] \;| \; j \in \{1,2, \ldots, c - 1\}\setminus min\}$
 Durch Schleifeninvariante
 \begin{enumerate}
     % Bsp: [7, 5, 6, 3]
-    \item Initialisierung: \\
-    $I(c, i, min)$ \\
-    $I(2, 1, 1)$ \\
-    \item Annahme: In Iteration $i$ soll gelten: 
-    
-    \item Schleifenschritt:
-    In Iteration $i + 1$ gilt 
-    \item Terminierung: 
+    \item Initialisierung:
+    % $I(c, i, min)$ \\
+    O.b.d.A.: $A[1] \leq A[2] \implies i=2, min = 1$, sonst analog\\
+    Somit gilt nach Zeile 6:
+    \begin{itemize}
+        \item $I(c, i, min) = I(3, 2, 1)$
+        \item $I(3,2,1): \quad ''A[2] = min\{\; A[j] \;| \; j \in \{1,2, \ldots, 3 - 1\}\setminus 1\}=min\{\; A[2] \;\}''$
+    \end{itemize}
+
+    \item Erhaltung:
+    In Iteration $c$ soll gelten:
+    \begin{itemize}
+        \item Annahme: $I(c, i, min)$ nach Zeile 7
+        \item Ziel: $I(c+1, i, min)$ nach Zeile 15
+        \item nach Zeile 8: \\
+           $A[c] \leq A[min] = min\{A[1], \ldots, A[c-1]\}$ \\
+           $\implies A[c] = min\{A[1],\ldots, A[c]\}$ \\
+           $\implies A[i] = min\{\; A[j] \;| \; j \in \{1,2, \ldots, c\}\setminus c\}$\\
+           $\iff I(c+1, i, min)$ nach Zeile 10, weil $i \gets min$ und $min \gets c$
+       \item nach Zeile 11: \\
+           $A[i] > A[c] > A[min] = min\{A[1], \ldots, A[c]\}$ \\
+           $\implies A[c] = min\{\; A[j] \;| \; j \in \{1,2, \ldots, c\}\setminus min\}$\\
+           $\implies I(c+1, i, min)$ nach Zeile 10, weil $i \gets min$ und $min \gets c$
+    \end{itemize}
+    \item Terminierung: \\
+    also gilt folglich $I(c+1, i, min)$
 \end{enumerate}
 \end{proof}
-\subsection{} Analysieren Sie die worst-case Laufzeit des formulierten Algorithmus.
+\subsection{} Analysieren Sie die worst-case Laufzeit des formulierten Algorithmus. \\
+Zeile 1  \\
+Zeile 2  \\
+Zeile 3  \\
+Zeile 4  \\
+Zeile 5  \\
+Zeile 6  \\
+Zeile 7  \\
+Zeile 8  \\
+Zeile 9  \\
+Zeile 10 \\
+
 
 \newpage
 \section{}
