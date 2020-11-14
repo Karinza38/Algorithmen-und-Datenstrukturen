@@ -1,0 +1,61 @@
+\documentclass[ngerman,landscape,twocolumn]{adtexsheet}
+
+ %for pseudocode
+ %http://tug.ctan.org/macros/latex/contrib/algorithm2e/doc/algorithm2e.pdf
+\usepackage[ruled,noend,noline,nofillcomment,linesnumbered,]{algorithm2e}
+\DontPrintSemicolon
+\SetKwFor{For}{for }{}{}
+\SetKwFor{While}{while }{}{}
+\SetKwIF{If}{ElseIf}{Else}{if}{}{else if}{else}{}
+\SetKw{Return}{return}
+\newcommand{\To}{\KwTo}
+\newcommand{\swap}{\leftrightarrow}
+\newcommand*{\CommentInLine}{\tcc*[f]}
+
+\exnumber{1}
+%Teilnehmer
+%<Name> & <Gruppennummer> & <Kreuz Aufgabe 1> & <Kreuz Aufgabe 2> & <Kreuz Aufgabe 3> & <Kreuz Aufgabe 4>
+\participantOne{Anton&1&x&x&-&-}
+\participantTwo{Berta&1&x&x&x&-}
+\participantThree{Charlie&1&-&x&-&-}
+\participantFour{-&-&-&-&-&-}
+
+% sheet specific notions and notation,
+%drawing automatons
+\usepackage{tikz}
+\tikzstyle{state}=[draw,circle,fill=gray!35, inner sep = 0pt, 
+minimum width = 22pt]
+\tikzstyle{accept}=[state,double]
+
+\begin{document}
+
+	\begin{question}
+		\begin{enumerate}
+			\item Beispiel-Algorithmus:
+				\begin{algorithm}
+					\tcc{For-Schleife}
+					\For{$i \gets 1$ \To n}{
+						$A[1]\swap A[2]$ \tcc*{Vertauschung}
+					}
+					\tcc{While-Schleife}
+					\While{$i < n$}{
+						\If(\tcc*[f]{Kaffee ist besser}){coffee $>$ tea}{drink coffee}
+						\ElseIf(\tcc*[f]{Tee ist besser}){tea $>$ coffee}{drink tea}
+						\Else(\tcc*[f]{gleich gut}){drink both}
+					}
+					\KwSty{superkalifragilistisch} \tcc*{custom keyword}
+					\Return 42
+					\caption{Beispiel(n,A,tea,coffee)}
+			\end{algorithm}
+		
+			\item \dots
+		\end{enumerate}
+	\end{question}
+
+	\newpage
+
+	\begin{question}
+		\dots
+	\end{question}
+
+\end{document}
