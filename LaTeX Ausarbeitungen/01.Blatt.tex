@@ -11,10 +11,10 @@
 \usepackage{amssymb}
 \usepackage{amsthm} %für das \qed Symbol. Außerdem gibt es eine proof environment
 \usepackage{graphicx}
-
 \usepackage{listings} % für code im Text
 \usepackage{lstautogobble} % für Pseudo code wie im VL-Skript
-\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+
 \lstnewenvironment{algorithm}[1][]{
     \lstset{
         autogobble        = true,
@@ -28,6 +28,7 @@
         numberstyle       = \small,
         texcl             = true,
         xleftmargin       = 2em,
+        linesnumbered     = true,
         framexleftmargin  = 2em,
         morekeywords = {
                 else,
@@ -44,7 +45,7 @@
 
 \usepackage{tikz}
 \usepackage[utf8]{inputenc}
-\usepackage{algpseudocode}
+%\usepackage{algpseudocode}
 \newcommand{\LD}{\langle}
 \newcommand{\RD}{\rangle}
  \usepackage[utf8]{inputenc}
@@ -64,6 +65,8 @@
 
 \title{Übung 1: Algorithmen und Datenstrukturen}
 \author{Valerij Dobler (7068135)}
+%\author{Robin Wannags (6948409)}
+%\author{Theodor Bajusz (7159556)}
 \date{\today}
 
 \begin{document}
@@ -120,10 +123,13 @@ Beschreiben Sie in Pseudocode einen Algorithmus der das Problem {\it Zweit-Klein
 
 \begin{algorithm}[H]
 \SetAlgoLined
+
 \KwResult{Das zweit kleinste Element}
- j $\gets$ 1\; % Index vom kleinsten Element
- i $\gets$ 1\; % Index vom zweit-kleinsten Element
- \For{$c \gets 2$ \KwTo $A.$length \KwBy $c = c + 1$}{
+ $j \gets 1$\; % Index vom kleinsten Element
+ $i \gets 1$\; % Index vom zweit-kleinsten Element
+ %\For{$c \gets 2$ \KwTo $A.$length \KwBy $c = c + 1$}{
+ $c \gets 2$\;
+ \While{$c <= A.$length}{
     \uIf{$A[c] \leq A[j]$}{ % Wert von aktuell betrachtetem Index (c) <= dem vom Index j (kleinster Wert)  ist
         $i \gets j$\;
         $j \gets c$\;
@@ -131,22 +137,24 @@ Beschreiben Sie in Pseudocode einen Algorithmus der das Problem {\it Zweit-Klein
     \uElseIf {$i = j$}{
         $j \gets c$
     }
+    $c++$\;
  }
  \Return $i$\;
 \caption{ZweitKleinstesElement($A$)}
 \end{algorithm}
 
-
 \subsection{} Beweisen Sie die Korrektheit Ihres Algorithmus mit Hilfe einer geeigneten Schleifeninvariante.
 
 \begin{Behauptung}
-$\forall k \in [1, \ldots, c]: A[i] \leq A[j] \leq A[k]$, wobei $c$ der Index vom zuletzt-besuchten Eintrag in der For-Schleife ist.
+$\forall k \in [2, \ldots, c]: A[i] \leq A[j] \leq A[k]$, wobei $c$ der Index vom zuletzt-besuchten Eintrag in der For-Schleife ist.
 \end{Behauptung}
 
 \begin{proof}
 Durch Schleifeninvariante
 \begin{enumerate}
-    \item Initialisierung: 
+    \item Initialisierung: \\
+    test \\
+     blub
     \item Annahme: In Iteration $i$ soll gelten: 
     \item Schleifenschritt:
     In Iteration $i + 1$ gilt 
@@ -155,6 +163,23 @@ Durch Schleifeninvariante
 \end{proof}
 \subsection{} Analysieren Sie die worst-case Laufzeit des formulierten Algorithmus.
 
+\newpage
+\section{}
+
+Zeigen Sie, dass $(ln(x))^k = O(x^\epsilon).$ Hierbei sind $k$, $\epsilon$ Konstanten größer Null. {\it Ein möglicher Hinweis: Zeigen Sie die Aussage zunächst für k = 1.}
+
+\section{}
+
+Ordnen Sie die folgenden Funktionen gemäß Ihres asymptotischen Wachstums und begründen Sie Ihre Antwort:
+
+\[
+f_1(n) = 3^n, \; f_2(n) = n*ln(n), \; f_3(n) = 2^n, \; f_4(n) = e^{log_2(n)}, \; f_5(n) = n^n, f_6(n) = n^{3/2}, f_7(n) = n!
+\]
+
+Bsp.: \\
+$f_4(n)$ < $f_2(n)$ < $f_6(n)$ < $f_3(n)$ < $f_1(n)$ < $f_7(n)$ < $f_5(n)$
+
+Begründung: \\
 
 
 \end{document}
