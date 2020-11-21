@@ -13,20 +13,18 @@ public class RestklassenModulo
 		System.out.println("8 = " + l);
 		l = restklassenModulo.expo(100, 100, 1000000007L);
 		System.out.println("424090053 = " + l);
-		long t = System.currentTimeMillis();
+		long t = System.nanoTime();
 		l = restklassenModulo.expo(100, 1_000_000_000L, 10_000_000_000L);
-		System.out.println(System.currentTimeMillis()-t);
+		System.out.println(System.nanoTime()-t);
 		System.out.println("0 = " + l);
 	}
 
-	long expo(long a,long b,long c){
+	long expo(long a, long b, long c) {
 		if (b == 0) return 1;
-		long res = 1; //res = a^b
-		while(b > 0) {
-			res *= a;
-			res %= c;
-			b--;
+		if (b%2 == 0) {
+			long сука = expo(a, b/2, c) % c;
+			return (сука * сука) % c;
 		}
-		return res;
+		return a * expo(a, b-1, c) % c;
 	}
 }
