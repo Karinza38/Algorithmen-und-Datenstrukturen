@@ -6,17 +6,17 @@ public class RestklassenModulo
 		RestklassenModulo restklassenModulo = new RestklassenModulo();
 		long l;
 		l = restklassenModulo.expo(1, 0, 99);
-		System.out.println(l);
+		System.out.println("1 = " + l);
 		l = restklassenModulo.expo(2, 1, 99);
-		System.out.println(l);
+		System.out.println("2 = " + l);
 		l = restklassenModulo.expo(2, 3, 99);
-		System.out.println(l);
+		System.out.println("8 = " + l);
 		l = restklassenModulo.expo(100, 100, 1000000007L);
-		System.out.println(l);
+		System.out.println("424090053 = " + l);
 		long t = System.currentTimeMillis();
 		l = restklassenModulo.expo(100, 1_000_000_000L, 10_000_000_000L);
 		System.out.println(System.currentTimeMillis()-t);
-		System.out.println(l);
+		System.out.println("0 = " + l);
 	}
 
 	long expo(long a,long b,long c){
