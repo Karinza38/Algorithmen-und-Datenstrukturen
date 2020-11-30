@@ -1,0 +1,269 @@
+\documentclass[ngerman,landscape,twocolumn]{adtexsheet}
+
+ %for pseudocode
+ %http://tug.ctan.org/macros/latex/contrib/algorithm2e/doc/algorithm2e.pdf
+\usepackage[ruled,noend,noline,nofillcomment,linesnumbered,]{algorithm2e}
+\DontPrintSemicolon
+\SetKwFor{For}{for }{}{}
+\SetKwFor{While}{while }{}{}
+\SetKwIF{If}{ElseIf}{Else}{if}{}{else if}{else}{}
+\SetKw{Return}{return}
+\newcommand{\To}{\KwTo}
+\newcommand{\swap}{\leftrightarrow}
+\newcommand*{\CommentInLine}{\tcc*[f]}
+
+\exnumber{2}
+%Teilnehmer
+%<Name> & <Gruppennummer> & <Kreuz Aufgabe 1> & <Kreuz Aufgabe 2> & <Kreuz Aufgabe 3> & <Kreuz Aufgabe 4>
+\participantOne{Theodor Bajusz&5&x&x}
+\participantTwo{Valerij Dobler&13&x&x}
+\participantThree{Matz Radloff&6&x&x}
+\participantFour{Robin Wannags&5&x&x}
+
+% sheet specific notions and notation,
+%drawing automatons
+\usepackage{tikz}
+\tikzstyle{state}=[draw,circle,fill=gray!35, inner sep = 0pt, 
+minimum width = 22pt]
+\tikzstyle{accept}=[state,double]
+
+\begin{document}
+
+	\begin{question}
+			In Algorithmus $1$ ist der Pseudocode eines Sortieralgorithmus BubbleSort gezeigt.
+
+			\begin{algorithm}
+			\caption{BubbleSort(A[1, \dots, n])}
+			    s \gets 1\\
+			    i \gets 0  \CommentInLine{Hilfsvariable für Beweis der Invariante}\\
+			    \While{s = 1}{
+			        s \gets 0\\
+    			    i \gets i + 1\\
+    				\For{j $\gets$ $1$ $\To$ $n$ $-$ $1$}{
+    				    \If{$A[j]$ $>$ $A[j+1]$}{
+        				    $A[j]$ $\swap$ $A[j+1]$\\
+        				    s \gets 1\\
+    				    }
+    				}
+		        }
+			\end{algorithm}
+			
+		\begin{enumerate}
+			\item 
+			Wenden Sie den Algorithmus am Beispiel des Arrays $A = \langle 6, 7, 3, 1, 9, 5, 2 \rangle$ an. Geben Sie dazu den Inhalt des Arrays A sowie die Anzahl der vorgenommenen Vertauschungen $v$ (Zeile 6) nach jedem Durchlauf der äußeren Schleife (Zeilen 2 bis 7) an. (2 Punkte)
+			
+			\begin{tabular}{|r|c|r|} \hline
+			    Durchlauf $n$ & Array $A$ & Vertauschungen $v$\\ \hline
+			    0 & $\langle 6,7,3,1,9,5,2 \rangle$ & 0\\ \hline
+			    1 & $\langle 6,3,1,7,5,2,9 \rangle$ & 4\\ \hline
+			    2 & $\langle 3,1,6,5,2,7,9 \rangle$ & 4\\ \hline
+			    3 & $\langle 1,3,5,2,6,7,9 \rangle$ & 3\\ \hline
+			    4 & $\langle 1,3,2,5,6,7,9 \rangle$ & 1\\ \hline
+			    5 & $\langle 1,2,3,5,6,7,9 \rangle$ & 1\\ \hline
+			    6 & $\langle 1,2,3,5,6,7,9 \rangle$ & 0\\ \hline \hline
+			    Summe &  & 13\\ \hline
+			\end{tabular}
+
+			\item
+			Beweisen Sie die Korrektheit von $BUBBLESORT$. Bestimmen Sie dazu zunächst eine
+            geeignete Invariante für die innere Schleife (Zeilen 4 bis 7) und nutzen Sie diese
+            dann zur Formulierung einer geeigneten Invariante für die äußere Schleife (Zeilen 2 bis 7). (6 Punkte)
+            
+            Sei das Eingabearray $A = \langle a_1, a_2, \ldots, a_n\rangle$\\
+            Behauptung: Wir betrachten die Invariante $I(b) = \forall i \in \mathbb{N}_{<b} :  A[b] \geq A[i]$
+            \begin{enumerate}[label=\arabic*)]
+            \item Initialisierung: I(1)\\
+            Hat A nur ein Element, und dieses ist nicht kleiner als alle anderen. $\implies I(1) gilt auch vor dem ersten for-Schleifendurchlauf$
+            \item Erhaltung: Angenommen $I(j)$ gilt, und wir kommen nach Zeile 7 in die if-Abfrage, dann gilt:
+            $$I(j) \land A[j] > A[j+1]$$
+            daher gilt nach dem Tausch in Zeile 8 $I(j+1)$
+            \item Terminierung: Die for-Schleife läuft bis zum Element $n-1$ und vergleicht in der letzten Iteration die Elemente $n-1$ und $n$ miteinander. Falls wir in die if-Abfrage reingehen, werden beide Elemente getauscht, wenn nicht, dann waren sie bereits korrekt sortiert. In jedem Fall gilt am Ende I(n). 
+            \end{enumerate}
+            
+	\newpage
+            
+            \item
+            Analysieren Sie die best-case und worst-case Laufzeit von BubbleSort. Hinweis: Die best-case Laufzeit ist eine untere Schranke, die angibt wie lange ein Algorithmus mindestens für die Verarbeitung einer idealen, d.h. am schnellsten zu bearbeiteten, Eingabe benötigt. (3 Punkte)
+
+            best-case: Array ist schon sortiert. (lineare Laufzeit)
+    
+            \begin{tabular}{r|r|r}
+            Zeile & Laufzeit & \\ \hline
+            1  & $\mathcal{O}(1)$ & \\
+            2  & $\mathcal{O}(1)$ & \\
+            3  & $\mathcal{O}(1)$ & \\
+            4  & $\mathcal{O}(1)$ & \\
+            5  & $\mathcal{O}(1)$ & \\
+            6  & $\sum_{i=0}^{n-1} \mathcal{O}(i)$ & \\
+            7  & $\mathcal{O}(1)$ & ist nie wahr, weil das Array schon sortiert ist \\
+            \end{tabular}
+            
+            $\implies T(n) = 3 \cdot \mathcal{O}(1) + (n - 1) \cdot 2 \cdot \mathcal{O}(1) = (2 \cdot n \cdot + 1) \cdot \mathcal{O}(1) = \mathcal{O}(n)$
+            
+            worst-case: Array muss n-mal durchlaufen werden (n-1 zum tauschen, 1 mal zum überprüfen am Ende) (quadratische Laufzeit)
+    
+            \begin{tabular}{r|r}
+            Zeile & Laufzeit  \\ \hline
+            1  & $\mathcal{O}(1)$ \\
+            2  & $\mathcal{O}(1)$ \\
+            3  & $\sum_{i=0}^{n} \mathcal{O}(i)$ \\
+            4  & $\mathcal{O}(1)$ \\
+            5  & $\mathcal{O}(1)$ \\
+            6  & $\sum_{i=0}^{n-1} \mathcal{O}(i)$ \\
+            7  & $\mathcal{O}(1)$ \\
+            8  & $\mathcal{O}(1)$ \\
+            9  & $\mathcal{O}(1)$ \\
+            \end{tabular}           
+            
+            $\implies T(n) = 2 \cdot \mathcal{O}(1) \:+\: n \cdot (3 + (n - 1) \cdot 4 \cdot \mathcal{O}(1))$
+            
+            $= 4n^2 \cdot \mathcal{O}(1) \:-\: n \mathcal{O}(1) \:+\: 2 \cdot \mathcal{O}(1)$
+            
+            $= \mathcal{O}(n^2)$
+            
+		\end{enumerate}
+	\end{question}
+
+	\newpage
+
+	\begin{question}
+	    \begin{enumerate}
+	        \item 
+		    Bestimmen Sie die Größenordnung der Funktionen wenn möglich mittels Mastertheorem.
+            Falls das Mastertheorem nicht anwendbar sein sollte, begründen Sie dies und verwenden stattdessen die Substitutionsmethode. (4 Punkte)
+            \begin{enumerate}
+                \item 
+            $$T_1(n) := \left\{
+                \begin{array}{ll}
+                    1, &  \textrm{für} \; n = 1 \\
+                    4\cdot T(\lceil n/4 \rceil) + 8n,  & \, \textrm{sonst} \\
+                \end{array}
+            \right. $$
+            
+            Rechnung:
+            \[
+            a=4, b=4, f(n)=8n \implies log_b(a) = log_4(4) = 1
+            \]
+            \[
+            f(n)=8n \in \Theta(n) \stackrel{M-Thm. (b)}{\implies} T_1(n) = \Theta(n \cdot log \, n) \quad \checkmark
+            \]
+                \item 
+            $$T_2(n) := \left\{
+                \begin{array}{ll}
+                    1, &  \textrm{für} \; n = 0 \\
+                    2   \cdot T(n-1) + 4,  & \, \textrm{sonst} \\
+                \end{array}
+            \right. $$
+            
+            Rechnung:
+            $$\begin{tabular}{cl}
+                T_2(n) &= 2 \cdot T(n-1) + 4 \\ % 1
+                    &= 2 \cdot (2 \cdot T(n-2) + 4) + 4 = 4 \cdot T(n-2) + 2 \cdot 4 + 4\\ % 2
+                    &= 4 \cdot (2 \cdot T(n-3) + 2 \cdot 4 + 4) + 4 = 8 \cdot T(n-3) + 4 \cdot 4 + 2 \cdot 4 + 4\\ % 3
+                    & \vdots\\
+                    &= 2^{n-1} \cdot (2 \cdot T(n-(n-1)) + 4) + \sum_{i=0}^{n-2} (2^i \cdot 4)\\ % n-1
+                    &= 2^{n-1} \cdot (2 \cdot \quad \qquad 1 \quad \qquad + 4) + \sum_{i=0}^{n-2} (2^i \cdot 4) \\ % n-1
+                    &= 2^n + \sum_{i=0}^{n-1} (2^i \cdot 4)\\
+                    &= 2^n + 2^{n-1} \cdot 4 + 2^{n-2} \cdot 4 + \ldots + 2 \cdot 4 + 4\\
+                    &= 2^n + 2^{n+1} + 2^n + \ldots + 2 \cdot 4 + 4 \in \Theta (2^{n+2}) \quad \checkmark
+            \end{tabular}$$
+            
+            \newpage
+                \item
+            $$T_3(n) := \left\{
+                \begin{array}{ll}
+                    1, &  \textrm{für} \; n = 1 \\
+                    3\cdot T(\lfloor n/3 \rfloor) + 2n\,log\,n,  & \, \textrm{sonst} \\
+                \end{array}
+            \right. $$
+            
+            Rechnung:
+            \[
+            a=3, b=3, f(n)=2n\,log\,n \implies log_b(a) = log_3(3) = 1
+            \]
+            Überprüfen der Regularitätsbedingung:
+            \[
+            a\cdot f(n/b) \leq c \cdot f(n) \quad \textrm{, für $c < 1$ und große $n$}
+            \]
+            \[
+            3 \cdot \frac{2n}{3} \cdot log(\frac{n}{3}) = 2n \cdot log(\frac{n}{3}) \leq c \cdot 2n\, log\,n 
+            \]
+            für $n>1$, kürze beide Seiten mit $2n$
+            \[
+            log(\frac{n}{3}) \leq c \cdot log\,n
+            \]
+            \[
+            log(n)-log(3) \leq c \cdot log\,n
+            \]
+            für ein beliebiges, aber festes $n$, bekommt man das gesuchte $c$ derart: 
+            \[
+            1 - \frac{log(3)}{log\, n} \leq c \quad \checkmark
+            \]
+            
+            \[
+            f(n)=2n\,log\,n \in \Omega(n^{1+\epsilon}) \stackrel{M-Thm. (c)}{\implies} T_3(n) = \Theta(2n\,log\,n) = \Theta(n\,log\,n) \quad
+            \]
+                \item
+            $$T_4(n) := \left\{
+                \begin{array}{ll}
+                    1, &  \textrm{für} \; n = 1 \\
+                    4 \cdot T(\lfloor n/3 \rfloor) + 2n\,log\,n,  & \, \textrm{sonst} \\
+                \end{array}
+            \right. $$
+            
+            Rechnung:
+            \[
+            a=4, b=3, f(n)=2n\,log\,n \implies log_b(a) = log_3(4) \approx 1,26
+            \]
+            \[
+            f(n)=2n\,log\,n \in O(n^{log_3(4)-\epsilon}) \stackrel{M-Thm. (a)}{\implies} T_4(n) = \Theta(n^{log_3(4)}) \quad \checkmark
+            \]
+            \end{enumerate}
+            
+            \newpage
+            
+    \newpage
+    \;
+    \newpage
+	
+            \item 
+		    Bestimmen Sie die Größenordnung der Funktion(en), indem sie die folgende Rekursionsgleichung
+            mithilfe eines Rekursionsbaums lösen.(2 Punkte)
+            
+            $$T_5(n) := \left\{
+                \begin{array}{ll}
+                    1, &  \textrm{für} \; n = 1 \\
+                    9 \cdot T(\lceil n/3 \rceil) + n^2,  & \, \textrm{sonst} \\
+                \end{array}
+            \right. $$
+            
+            \includegraphics[scale=0.81]{2.2.b(2).pdf}
+            
+            \[
+            \implies 9^n \cdot log_3(n) = O(9^n \cdot log(n))
+            \]
+    \newpage
+    \;
+    \newpage
+            \item
+            Beweisen Sie die Korrektheit ihrer Lösung von $T_5$ per Induktion. 
+            Induktionsbeweis. (4 Punkte)
+            
+            $$T_5(n) := \left\{
+                \begin{array}{ll}
+                    1, &  \textrm{für} \; n = 1 \\
+                    9 \cdot T(\lceil n/3 \rceil) + n^2,  & \, \textrm{sonst} \\
+                \end{array}
+            \right. $$
+            
+            $$\begin{tabular}{cl}
+                T_5(n) &= 9 \cdot T(\lceil \frac{n}{3} \rceil) + n^2 \\ % 1
+                    &= 9 \cdot (9 \cdot T(\lceil \frac{\lceil \frac{n}{3} \rceil}{3} \rceil) + n^2) + n^2 = 9^2 \cdot T(\lceil \frac{\lceil \frac{n}{3} \rceil}{3} \rceil) + 9 \cdot n^2 + n^2\\ % 2
+                    & \vdots \\
+                    &\geq 9^n + \sum_{i=0}^{n-1}(9^i \cdot n^2)
+                   
+            \end{tabular}$$
+            
+	    \end{enumerate}
+	\end{question}
+\end{document}
