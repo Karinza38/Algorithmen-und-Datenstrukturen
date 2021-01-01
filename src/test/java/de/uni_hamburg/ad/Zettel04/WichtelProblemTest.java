@@ -10,18 +10,18 @@ import java.util.List;
 
 import static java.util.Collections.swap;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 @Slf4j
 public class WichtelProblemTest {
   
   private static final List<int[]> permutations = new ArrayList<>();
-  private static final List<Integer> sortedArray = Arrays.asList(0, 1, 2, 3, 4);
   
   @BeforeAll
   static void initializeMap() {
     
-    permute(new ArrayList<>(sortedArray), 0);
+    permute(new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), 0);
   }
   
   static void permute(List<Integer> arr, int k) {
@@ -42,11 +42,12 @@ public class WichtelProblemTest {
     // Act
     for (var permutation : permutations) {
       int[] sorted = WichtelProblem.sort(permutation);
-      assertThat(sorted, is(sortedArray));
-      
+      assertThat(sorted, is(new int[]{0, 1, 2, 3, 4}));
     }
     
     // Assert
   }
+  
+
   
 }
