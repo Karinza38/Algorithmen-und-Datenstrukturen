@@ -3,148 +3,56 @@ package de.uni_hamburg.ad.Zettel04;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 @Slf4j
 public class WichtelProblem {
-  
-  public static int[] sort(int[] arr) {
-    log.info("Sorting {}", arr);
-    List<SortResult> sortResults = new ArrayList<>();
-    
-    sortResults.add(checkIfSmaller(0, 1, arr));
-    sortResults.add(checkIfSmaller(1, 2, arr));
-    sortResults.add(checkIfSmaller(2, 3, arr));
-    sortResults.add(checkIfSmaller(3, 4, arr));
-    sortResults.add(checkIfSmaller(1, 3, arr));
-    
-    List<Integer> leftInArray = new ArrayList<>();
-    List<Integer> rightInArray = new ArrayList<>();
-    List<Integer> middleInArray = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      int finalI = i;
-      if (sortResults.stream().allMatch(t -> t.getBigger() != finalI)) {
-        leftInArray.add(finalI);
-      } else if (sortResults.stream().allMatch(t -> t.getSmaller() != finalI)) {
-        rightInArray.add(finalI);
-      } else {
-        middleInArray.add(finalI);
+
+  public static int[] sort(int[] arr){          // a, b, c, d, e
+    arr = Arrays.copyOf(arr, 5);
+    if (arr[0] > arr[1]) swap(0, 1, arr);   // a < b
+    if (arr[2] > arr[3]) swap(2, 3, arr);   // c < d
+    int biggestAC = arr[0] > arr[2] ? 0 : 2;     // a < c
+    if (arr[4] < arr[biggestAC]) {               // e < c
+      if (arr[4] < arr[1]) {                     // e < b
+        if (arr[4] < arr[0]) {                   // e < a
+          // e<a<b<c<d
+          swap(4, 0, arr); // 0,1,2,3,4 -> 4,1,2,3,0
+          swap(4, 1, arr); // 4,1,2,3,0 -> 4,0,2,3,1
+          swap(4, 2, arr); // 4,0,2,3,1 -> 4,0,1,3,2
+          swap(4, 3, arr); // 4,0,1,3,2 -> 4,0,1,2,3
+        } else {                                 // a <= e
+          //(a<=e<b)<(c<d)
+          swap(4, 1, arr); // 0,1,2,3,4 -> 0,4,2,3,1
+          swap(4, 2, arr); // 0,4,2,3,1 -> 0,4,1,3,2
+          swap(4, 3, arr); // 0,4,1,3,2 -> 0,4,1,2,3
+        }
+      } else {                                   // b <= e
+        //a<b<=e<c<d
+        swap(2, 3, arr); // 0,1,2,3,4 -> 0,1,3,2,4
+        swap(2, 4, arr); // 0,1,3,2,4 -> 0,1,4,2,3
+      }
+    } else {                                     // c <= e
+      if (arr[2] < arr[1]) swap(2, 1, arr);   // b < c
+      if (arr[4] < arr[3]) {                     // e < d
+        // a<b<c=<e<d
+        swap(3, 4, arr);
+      } else {                                   // d <= e
+        if (arr[3] < arr[2]) swap(3, 2, arr);   // c < d
+        // a<b<c<d<=e
+        // do nothing, already sorted
       }
     }
-    if (leftInArray.size() == 2) {
-      if (leftInArray.get(0) > leftInArray.get(1)) {
-        Collections.swap(leftInArray, 0, 1);
-      }
-    } else if (leftInArray.size() > 2) {
-      throw new RuntimeException("Mehr als 2 Elemente im linken Teil!");
-    }
-    if (rightInArray.size() == 2) {
-      if (rightInArray.get(0) > rightInArray.get(1)) {
-        Collections.swap(rightInArray, 0, 1);
-      }
-    } else if (rightInArray.size() > 2) {
-      throw new RuntimeException("Mehr als 2 Elemente im rechten Teil!");
-    }
-    if (middleInArray.size() == 2) {
-      Collections.swap(middleInArray, 0, 1);
-    } else if (middleInArray.size() == 3) {
-      if (sortResults.contains(SortResult.of(middleInArray.get(0), middleInArray.get(1)))) {                            //0 < 1
-        if (checkIfSmaller(1, 2, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 2) {       //2 < 1
-          // refactor later
-          if (checkIfSmaller(0, 2, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 2) {     //2 < 0
-            Collections.swap(middleInArray, 1, 2);  // 0 1 2 -> 0 2 1
-            Collections.swap(middleInArray, 0, 1);  // 0 2 1 -> 2 0 1
-          } else {                                                                                                      //0 < 2
-            Collections.swap(middleInArray, 1, 2);  // 0 1 2 -> 0 2 1
-          }
-        } else {
-          // 0 1 2 already sorted
-        }
-      }
-      if (sortResults.contains(SortResult.of(middleInArray.get(1), middleInArray.get(0)))) {                            //1 < 0
-        if (checkIfSmaller(0, 2, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 2) {       //2 < 0
-          // refactor later
-          if (checkIfSmaller(1, 2, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 2) {     //2 < 1
-            Collections.swap(middleInArray, 0, 2);  // 0 1 2 -> 2 1 0
-          } else {                                                                                                      //1 < 2
-            Collections.swap(middleInArray, 0, 1);  // 0 1 2 -> 1 0 2
-            Collections.swap(middleInArray, 1, 2);  // 1 0 2 -> 1 2 0
-          }
-        } else {
-          Collections.swap(middleInArray, 0, 1);  // 0 1 2 -> 1 0 2
-        }
-      }
-      if (sortResults.contains(SortResult.of(middleInArray.get(1), middleInArray.get(2)))) {                            //1 < 2
-        if (checkIfSmaller(0, 1, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 1) {       //1 < 0
-          // refactor later
-          if (checkIfSmaller(0, 2, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 2) {     //2 < 0
-            Collections.swap(middleInArray, 0, 1);  // 0 1 2 -> 1 0 2
-            Collections.swap(middleInArray, 1, 2);  // 1 0 2 -> 1 2 0
-          } else {                                                                                                      //0 < 2
-            Collections.swap(middleInArray, 0, 1);  // 0 1 2 -> 1 0 2
-          }
-        } else {                                                                                                        //0 < 1
-          //0 1 2 already sorted
-        }
-      }
-      if (sortResults.contains(SortResult.of(middleInArray.get(2), middleInArray.get(1)))) {                            //2 < 1
-        if (checkIfSmaller(0, 1, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 1) {       //1 < 0
-          // refactor later
-          if (checkIfSmaller(0, 2, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 2) {     //2 < 0
-            Collections.swap(middleInArray, 0, 2);  // 0 1 2 -> 2 1 0
-          } else {                                                                                                      //0 < 2
-            Collections.swap(middleInArray, 0, 1);  // 0 1 2 -> 1 0 2
-          }
-        } else {                                                                                                        //0 < 1
-          if (checkIfSmaller(0, 2, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 2) {     //2 < 0
-            Collections.swap(middleInArray, 0, 1);  // 0 1 2 -> 1 0 2
-            Collections.swap(middleInArray, 0, 2);  // 1 0 2 -> 2 0 1
-          } else {                                                                                                      //0 < 2
-            Collections.swap(middleInArray, 0, 1);  // 0 1 2 -> 1 0 2
-          }
-        }
-      }
-      if (sortResults.contains(SortResult.of(middleInArray.get(2), middleInArray.get(0)))) {                            //2 < 0
-        if (checkIfSmaller(0, 1, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 1) {       //1 < 0
-          // refactor later
-          if (checkIfSmaller(1, 2, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 2) {     //2 < 1
-            Collections.swap(middleInArray, 0, 2);  // 0 1 2 -> 2 1 0
-          } else {                                                                                                      //1 < 2
-            Collections.swap(middleInArray, 0, 1);  // 0 1 2 -> 1 0 2
-            Collections.swap(middleInArray, 1, 2);  // 1 0 2 -> 1 2 0
-          }
-        } else {                                                                                                        //0 < 1
-          Collections.swap(middleInArray, 0, 2);  // 0 1 2 -> 2 1 0
-          Collections.swap(middleInArray, 1, 2);  // 2 1 0 -> 2 0 1
-        }
-      }
-      if (sortResults.contains(SortResult.of(middleInArray.get(0), middleInArray.get(2)))) {                            //0 < 2
-        if (checkIfSmaller(0, 1, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 0) {       //0 < 1
-          // refactor later
-          if (checkIfSmaller(1, 2, middleInArray.stream().mapToInt(i -> i).toArray()).getSmaller() == 2) {     //2 < 1
-            Collections.swap(middleInArray, 1, 2);  // 0 1 2 -> 0 2 1
-          } else {                                                                                                      //1 < 2
-            // 0 1 2 already sorted
-          }
-        } else {                                                                                                        //1 < 0
-          Collections.swap(middleInArray, 0, 1);  // 0 1 2 -> 1 0 2
-        }
-      }
-    }
-    
-    leftInArray.addAll(middleInArray);
-    leftInArray.addAll(rightInArray);
-    return leftInArray.stream().mapToInt(i -> i).toArray();
+    return arr;
   }
-  
-  private static SortResult checkIfSmaller(int one, int two, int[] arr) {
-    if (arr[one] < arr[two]) {
-      return SortResult.of(one, two);
-    } else {
-      return SortResult.of(two, one);
-    }
+
+  private static void swap(int i, int j, int[] arr) {
+      int tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
   }
 }
 

@@ -34,20 +34,19 @@ public class WichtelProblemTest {
       permutations.add(arr.stream().mapToInt(i -> i).toArray());
     }
   }
-  
-  
+
+
   @Test
   void sortTest() {
-    
-    // Act
-    for (var permutation : permutations) {
+    for (int i = 1; i <= permutations.size(); i++) {
+      // Act
+      int[] permutation = permutations.get(i-1);
+      log.info("sorting {} at iteration {}/120", permutation, i);
       int[] sorted = WichtelProblem.sort(permutation);
-      assertThat(sorted, is(new int[]{0, 1, 2, 3, 4}));
-    }
-    
-    // Assert
-  }
-  
 
-  
+      // Assert
+      assertThat(sorted, is(new int[] { 0, 1, 2, 3, 4 }));
+    }
+  }
+
 }
