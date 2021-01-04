@@ -15,15 +15,15 @@ import static org.hamcrest.Matchers.is;
 
 @Slf4j
 public class WichtelProblemTest {
-  
+
   private static final List<int[]> permutations = new ArrayList<>();
-  
+
   @BeforeAll
   static void initializeMap() {
-    
+
     permute(new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), 0);
   }
-  
+
   static void permute(List<Integer> arr, int k) {
     for (int i = k; i < arr.size(); i++) {
       swap(arr, i, k);
@@ -38,10 +38,8 @@ public class WichtelProblemTest {
 
   @Test
   void sortTest() {
-    for (int i = 1; i <= permutations.size(); i++) {
+    for (var permutation: permutations) {
       // Act
-      int[] permutation = permutations.get(i-1);
-      log.info("sorting {} at iteration {}/120", permutation, i);
       int[] sorted = WichtelProblem.sort(permutation);
 
       // Assert
