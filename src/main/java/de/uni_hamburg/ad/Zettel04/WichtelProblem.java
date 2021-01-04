@@ -12,7 +12,7 @@ public class WichtelProblem {
   private final static int D=3;
   private final static int E=4;
 
-  public static int[] sort(int[] arr){          // a, b, c, d, e
+  public static int[] sort(int[] arr){           // a, b, c, d, e
     arr = Arrays.copyOf(arr, E + 1);
 
     // Prepare a,b,c,d
@@ -23,156 +23,97 @@ public class WichtelProblem {
       swap(B, D, arr);
     }                                            // => b < d
     // Results in:
+    // a<b<d && c<d
+
     // b → d
     // ↑   ↑
     // a   c
     // How to read the graph: a → b == a<b
 
-    // Pinpoint the position of e
-    if (arr[E] < arr[D]) {                       // e < d
-      // b  → d
-      // ↑  🡕 ↑
-      // a e  c
-      // NOTE: remember e < d !
-      // For better readability it will be omitted in the further graphs in this scope!
+    // Pinpoint e into [a,b,d] (c is kept in the end for later)
+    if (arr[E] < arr[B]) {                       // e < b
+      // e → b → d
+      //     ↑   ↑
+      //     a   c
 
-      if (arr[E] < arr[B]) {                     // e < b
+      if (arr[E] < arr[A]) {                   // e < a
+        // e<a<b<d
+
+        //     b → d
+        //   🡕 ↑   ↑
+        // e → a   c
+        swap(0, 4, arr); // 0,1,2,3,4 -> 4,1,2,3,0
+        swap(1, 4, arr); // 4,1,2,3,0 -> 4,0,2,3,1
+        swap(2, 4, arr); // 4,0,2,3,1 -> 4,0,1,3,2
+      } else {                                 // e >= a
+        // a<=e<b<d
+
         // e → b → d
-        //     ↑   ↑
-        //     a   c
-
-        if (arr[E] < arr[A]) {                   // e < a
-          //     b → d
-          //   🡕 ↑   ↑
-          // e → a   c
-
-          if (arr[B] < arr[C]) {                 // b < c
-            // e<a<b<c<d ✔
-
-            //    b → d
-            //  🡕 ↑ 🡖 ↑
-            // e →a   c
-            swap(4, 0, arr); // 0,1,2,3,4 -> 4,1,2,3,0
-            swap(4, 1, arr); // 4,1,2,3,0 -> 4,0,2,3,1
-            swap(4, 2, arr); // 4,0,2,3,1 -> 4,0,1,3,2
-            swap(4, 3, arr); // 4,0,1,3,2 -> 4,0,1,2,3
-          } else {                               // b >= c
-            // e<a<c<=b<d ✔?
-
-            //     b → d
-            //  🡕  ↑ 🡔 ↑
-            // e → a   c
-            swap(4, 0, arr); // 0,1,2,3,4 -> 4,1,2,3,0
-            swap(4, 1, arr); // 4,1,2,3,0 -> 4,0,2,3,1
-            swap(4, 3, arr); // 4,0,2,3,1 -> 4,0,2,1,3
-          }
-        } else {                                 // e >= a
-          // e → b → d
-          // ↑ 🡕     ↑
-          // a       c
-
-          if (arr[B] < arr[C]) {                 // b < c
-            //a<=e<b<c<d ✔
-
-            // e → b → d
-            // ↑ 🡕   🡖 ↑
-            // a       c
-            swap(4, 1, arr); // 0,1,2,3,4 -> 0,4,2,3,1
-            swap(4, 2, arr); // 0,4,2,3,1 -> 0,4,1,3,2
-            swap(4, 3, arr); // 0,4,1,3,2 -> 0,4,1,2,3
-          } else {                               // b >= c
-            //a<=e<c<=b<d ✔
-
-            // e → b → d
-            // ↑ 🡕   🡔 ↑
-            // a       c
-            swap(4, 1, arr); // 0,1,2,3,4 -> 0,4,2,3,1
-            swap(4, 3, arr); // 0,4,2,3,1 -> 0,4,2,1,3
-          }
-        }
-      } else {                                   // e >= b
-        // b → e → d
-        // ↑       ↑
+        // ↑ 🡕     ↑
         // a       c
 
-        if (arr[E] < arr[C]) {                   // e < c
-          // b → e → d
-          // ↑    🡖  ↑
-          // a       c
+        swap(1, 4, arr); // 0,1,2,3,4 -> 0,4,2,3,1
+        swap(2, 4, arr); // 0,4,2,3,1 -> 0,4,1,3,2
+      }
+    } else {                                   // e >= b
+      // a<b<d
 
-          if (arr[B] < arr[C]) {                 // b < c
-            // a<b<=e<c<d
+      // b → e → d
+      // ↑       ↑
+      // a       c
 
-            // b → c → d
-            // ↑ 🡖 ↑ 🡕
-            // a   e
-            swap(2, 3, arr); // 0,1,2,3,4 -> 0,1,3,2,4
-            swap(2, 4, arr); // 0,1,3,2,4 -> 0,1,4,2,3
-          } else {                               // b >= c
-            // a<b<=e<c<d
+      if (arr[E] < arr[D]) {                   // e < d
+        // a<b<=e<d
 
-            // b → c → d
-            // ↑ 🡖 ↑ 🡕
-            // a   e
+        // b → e → d
+        // ↑    🡖  ↑
+        // a       c
 
-            swap(2, 3, arr); // 0,1,2,3,4 -> 0,1,3,2,4
-            swap(2, 4, arr); // 0,1,3,2,4 -> 0,1,4,2,3
-          }
-        } else {                                 // e >= c
+        swap(2, 4, arr); // 0,1,2,3,4 -> 0,1,4,3,2
+      } else {                                 // e >= d
+        // a<b<d<=e
 
-          // b → e →  d
-          // ↑   ↑ 🡕
-          // a   c
+        // b → e →  d
+        // ↑   ↑ 🡕
+        // a   c
 
-          if (arr[B] < arr[C]) {                 // b < c
-            // a<b<=c<=e<d
-
-            // b → e →  d
-            // ↑ 🡖 ↑ 🡕
-            // a   c
-            swap(3, 4, arr); // 0,1,2,3,4 -> 0,1,2,4,3
-          } else {                               // b >= c
-
-            swap(1, 2, arr); // 0,1,2,3,4 -> 0,2,1,3,4
-            swap(3, 4, arr); // 0,1,2,3,4 -> 0,2,1,4,3
-          }
-        }
+        swap(2, 4, arr); // 0,1,2,3,4 -> 0,1,4,3,2
+        swap(2, 3, arr); // 0,1,4,3,2 -> 0,1,3,4,2
       }
     }
-    else {                                       // e >= d
-      // b → d → e
-      // ↑   ↑
-      // a   c
-      // Used 4 comparisons until here.
+    final int newC = 4;
+    final int newD = 2;
+    // new e is on index 3
 
-      if (arr[B] < arr[C]) {                     // b < c
-        // a<b<c
-        // c<d<=e
+    // Squeeze in c into [a,b,d]
+    if (arr[newC] < arr[B]) {                   // c < b
+      if (arr[newC] < arr[A]) {                 // c < a
+        // c<=a<=b<=d<=e
 
-        // b → d →  e
-        // ↑ 🡖 ↑ 🡕
-        // a → c
-        // all in order already
-      } else {                                   // b >= c
-        // a<b
-        // c<b
-        // c<d<=e
-        if (arr[A] < arr[C]) {                   // a < c
-          // a<c<b<d<=e
+        swap(0, 4, arr); // 0,1,3,4,2 -> 2,1,3,4,0
+        swap(1, 4, arr); // 2,1,3,4,0 -> 2,0,3,4,1
+        swap(2, 4, arr); // 2,0,3,4,1 -> 2,0,1,4,3
+        swap(3, 4, arr); // 2,0,1,4,3 -> 2,0,1,3,4
+      } else {                               // c >= a
+        // a<=c<=b<=d<=e
 
-          // b → d →  e
-          // ↑ 🡔 ↑ 🡕
-          // a   c
+        swap(1, 4, arr); // 0,1,3,4,2 -> 0,2,3,4,1
+        swap(2, 4, arr); // 0,2,3,4,1 -> 0,2,1,4,3
+        swap(3, 4, arr); // 0,2,1,4,3 -> 0,2,1,3,4
+      }
+    } else {                                 // c >= b
+      if (arr[newC] < arr[newD]) {           // c < d
+        // a<=b<=c<=d<=e
 
-          swap(1, 2, arr); // 0,1,2,3,4 -> 0,2,1,3,4
-        } else {                                 // a=> c
-          // c<a<b<d<=e
-          swap(1, 2, arr); // 0,1,2,3,4 -> 1,0,2,3,4
-          swap(0, 1, arr); // 0,1,2,3,4 -> 1,2,0,3,4
+        swap(2, 4, arr); // 0,1,3,4,2 -> 0,1,2,4,3
+        swap(3, 4, arr); // 0,1,2,4,3 -> 0,1,2,3,4
+      } else {                               // c>=d
+        // a<=b<=d<=c<=e
 
-        }
+        swap(3, 4, arr); // 0,1,3,4,2 -> 0,1,3,2,4
       }
     }
+
     return arr;
   }
 
