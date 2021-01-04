@@ -10,11 +10,10 @@ import java.util.List;
 
 import static java.util.Collections.swap;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 @Slf4j
-public class WichtelProblemTest {
+class WichtelProblemTest {
 
   private static final List<int[]> permutations = new ArrayList<>();
 

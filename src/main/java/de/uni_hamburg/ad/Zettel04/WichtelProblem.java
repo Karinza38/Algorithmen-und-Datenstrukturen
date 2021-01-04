@@ -6,13 +6,16 @@ import java.util.Arrays;
 
 
 @Slf4j public class WichtelProblem {
-    private final static int A = 0;
-    private final static int B = 1;
-    private final static int C = 2;
-    private final static int D = 3;
-    private final static int E = 4;
+    private static final int A = 0;
+    private static final int B = 1;
+    private static final int C = 2;
+    private static final int D = 3;
+    private static final int E = 4;
 
-    public static int[] sort(int[] arr) {           // a, b, c, d, e
+    private WichtelProblem() {
+    }
+
+    public static int[] sort(int[] arr) {           // arr = [a, b, c, d, e]
         arr = Arrays.copyOf(arr, E + 1);
 
         // Prepare a,b,c,d
