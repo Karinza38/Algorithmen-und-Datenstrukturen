@@ -73,3 +73,8 @@ fabric.properties
 .idea/sonarlint
 
 /target/
+
+/Latex\ Ausarbeitungen/*.aux
+/Latex\ Ausarbeitungen/*.fls
+/Latex\ Ausarbeitungen/*.fdb_latexmk
+/Latex\ Ausarbeitungen/*.synctex.gz
