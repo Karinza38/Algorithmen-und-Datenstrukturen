@@ -1,0 +1,283 @@
+\documentclass[ngerman,landscape,twocolumn]{adtexsheet}
+
+ %for pseudocode
+ %http://tug.ctan.org/macros/latex/contrib/algorithm2e/doc/algorithm2e.pdf
+\usepackage[ruled,noend,noline,nofillcomment,linesnumbered,]{algorithm2e}
+\DontPrintSemicolon
+\SetKwFor{For}{for }{}{}
+\SetKwFor{While}{while }{}{}
+\SetKwIF{If}{ElseIf}{Else}{if}{}{else if}{else}{}
+\SetKw{Return}{return}
+\newcommand{\To}{\KwTo}
+\newcommand{\swap}{\leftrightarrow}
+\newcommand*{\CommentInLine}{\tcc*[f]}
+
+\exnumber{4}
+%Teilnehmer
+%<Name> & <Gruppennummer> & <Kreuz Aufgabe 1> & <Kreuz Aufgabe 2> & <Kreuz Aufgabe 3> & <Kreuz Aufgabe 4>
+\participantOne{Theodor Bajusz&5&x&x&x&x&x&x}
+\participantTwo{Valerij Dobler&13&x&x&x&x&x&x}
+\participantThree{Matz Radloff&6&x&x&x&x&x&x}
+\participantFour{Robin Wannags&5&x&x&x&x&x&x}
+
+% sheet specific notions and notation,
+%drawing automatons
+\usepackage{tikz}
+\usepackage{listings}
+
+\usepackage{xcolor}
+
+\tikzstyle{state}=[draw, circle, fill=gray!35, inner sep = 0pt, minimum width = 22pt]
+\tikzstyle{accept}=[state,double]
+
+\begin{document}
+
+\begin{question}
+    \begin{enumerate}
+    \item Ist ein aufsteigend sortiertes Array ein min-Heap oder ein max-Heap? Begründen Sie Ihre Antwort. (1 Punkt) \\\\
+        Sei $I(a_i)$ der Index vom Element $a_i$ im Array $a$.
+        
+        In einer aufsteigend sortierten Folge $a = \langle a_1, a_2, \ldots, a_n \rangle$ gilt für alle verschiedene $a_i, a_j \in a$ und $i < j : a_i \leq a_j$. Die Kinder von einem Element $a_i$ in einem Heap werden immer derart ermittelt: linkes Kind $ I(a_{i_l})= 2 \cdot I(a_i)$ und rechtes Kind $I(a_{i_r})= 2 \cdot I(a_i)+ 1$. Da $a_i \leq a_{i_l} \land a_i \leq a_{i_r}$ gilt, ist die min-Heap-Eigenschaft für alle $a_i \in a$ erfüllt. Es handelt sich also bei aufsteigend sortierten Arrays immer um einen min-Heaps. \qed
+        
+    \item Zeigen Sie, dass ein Heap mit $n$ Elementen eine Höhe $h \in \Theta(log \; n)$ hat. (1 Punkt) \\\\
+        Da Heaps links-vollständige Binärbäume sind, hat der Knoten an der Stelle $n$ die größte Tiefe. Wenn wir dessen Höhe ermitteln möchten, zählen wir die Anzahl $h$ der Vorfahren vom Knoten $n$. Das ist gleichbedeutend zu der Ungleichung $(\lfloor \frac{n}{2} \rfloor)^h > 0$ wobei $x$ maximal sein soll.
+\[
+        (\lfloor \frac{n}{2} \rfloor)^h > 0
+        \iff 
+\]
+        Das Ergebnis davon ist $\lfloor log \; n \rfloor = h \implies h \in \Theta(log \; n)$. \qed
+    \item Zeigen Sie, dass ein Heap der Größe $n$ maximal $\lceil \frac{n}{2^{h+1}} \rceil$ Knoten der Höhe $h$ hat. (2 Punkte)
+    
+    Da Heaps links-vollständige Binärbäume sind, ist die Einfügeposition eindeutig.\\
+    Wenn man in einem vollständigen Heap der Höhe $h_0$ mit $2^h_0-1=n$ Knoten, einen Knoten hinzufügt, erhöht sich die Tiefe des Baums um 1; die Anzahl der Knoten auf jeder Höhe bleibt gleich, außer auf der neuen höchsten Höhe $h_0+1$. Wenn man einen zweiten Knoten hinzufügt, erhöht sich die Anzahl der Knoten auf Höhe 0 um 1. Für alle 2 Knoten, die auf Höhe $h$ hinzugefügt werden, erhöht sich die Anzahl der Knoten auf der Höhe $h+1$ um 1. Entsprechend ändert sich die Anzahl der Knoten mit $h=2$ für alle 4 Knoten, die hinzugefügt werden.
+    Also ändert sich für alle $2^{h+1}$ Änderungen die Anzahl der Knoten auf der Ebene $h$.
+    
+    Daraus folgt, dass auf Höhe $h_0$ maximal $\lceil \frac{n}{2^{h_0+1}} \rceil$ Knoten sind, was zu Zeigen war.
+
+    \item Zeigen Sie, dass in einem Heap die Anzahl der inneren Knoten um eins kleiner oder gleich der Anzahl an Blättern ist. (2 Punkte)
+    
+    Wir gehen davon aus, dass Knoten in einem Binärbaum mit nur einem Kindknoten auch zu den innere Knoten gezählt werden.
+    
+        \begin{itemize}
+            \item Behauptung:\\ Ein nicht leerer Heap mit $n$ Blättern hat $n$ oder $n-1$ innere Knoten $k$.
+            \item Induktionsanfang: $k=1$ \\
+                Der Baum hat nur den Wurzelknoten, welcher keine Kinder hat und demnach ein Blatt ist. Und der Baum hat null innere Knoten. \checkmark
+            \item Induktionsvoraussetzung: Für eine beliebige aber feste Anzahl an Blättern $n$ hat der Heap $n$ oder $n-1$ innere Knoten $k$.
+            \item Induktionsschritt: Wenn man einen neuen Knoten in den Baum anhängen möchte, gibt es zwei Möglichkeiten
+            \begin{enumerate}
+                \item Man hängt den Knoten an ein Blatt, dann wird das bisherige Blatt zu einem inneren Knoten. Dadurch wächst jeweils die Anzahl der Blätter und der inneren Knoten um 1 und die Bedingung gilt weiterhin. $\implies n+1 = k+1$ \checkmark
+                \item Man hängt den Knoten an einen inneren Knoten, dadurch verändert sich die Anzahl der inneren Knoten nicht, aber es kommt ein neues Blatt hinzu. $\implies n+1 = k$ \checkmark\\ Da wir einen Binärbaum haben, kann man an den inneren Knoten keine weiteren Blätter mehr anhängen.
+            \end{enumerate}
+        \end{itemize}
+    \end{enumerate}
+\end{question}
+
+\newpage
+\definecolor{codegreen}{rgb}{0.4,0.4,0.4}
+\definecolor{codegray}{rgb}{0.7,0.7,0.7}
+\definecolor{codepurple}{rgb}{0.2,0.3,0.9}
+\definecolor{backcolour}{rgb}{0.9,0.9,0.9}
+
+\begin{question}
+Zeigen Sie, dass die Laufzeit von BuildHeap aus der Vorlesung in $O(n)$ liegt. Sie können Voraussetzen, dass die Anzahl der Knoten auf Höhe $h$ für einen Heap der Größe $n$ durch $\lceil \frac{n}{2^{h+1}} \rceil$ beschränkt ist. (4 Punkte).
+\end{question}
+
+Wir können eine einfache obere Schranke für die Laufzeit von Build-Max-Heap wie folgt berechnen. Jeder Aufruf von Max-Heapify kostet Zeit $O(log n)$, und Build-Max-Heap macht $O(n)$ solcher Aufrufe. Somit beläuft sich die Gesamtlaufzeit auf $O(N log n)$. Diese obere Schranke ist zwar korrekt, aber nicht asymptotisch scharf.
+
+Wir können eine schärfere Schranke herleiten, wenn wir ausnutzen, dass die Laufzeit von Max-Heapify auf einem Knoten mit der Höhe des Knotens im Baum variiert und dass die Höhe der meisten Knoten klein ist. Unsere strengere Analyse beruht auf den Eigenschaften, dass ein $n$-elementiger Heap die Höhe $\lfloor log n \rfloor$ hat und dass es höchstens $\lceil \frac{n}{2^{h+1}} \rceil$ Knoten der Höhe $h$ gibt.
+
+Die Zeit, die von der Prozedur Max-Heapify benötigt wird, wenn sie auf einen Knoten der Höhe $h$ angewendet wird, ist $O(h)$. Daher können wir für die Gesamtkosten von Build-Max-Heap die obere Schranke
+\[
+\sum_{h=0}^{\lfloor log\,n \rfloor} \left\lceil \frac{n}{2^{h+1}} \right\rceil O(h) = O\left( n \sum_{h=0}^{\lfloor log\,n \rfloor} \frac{h}{2^h} \right)
+\]
+angeben. Die letzte Summe kann durch Substitution von $x$ durch $1/2$ in der Formel
+\[
+\sum_{k=0}^{\infty} kx^k= \frac{x}{(1-x)^2}
+\]
+für $|x| < 1$ ausgewertet werden, was zu
+
+\[
+\sum_{h=0}^{\infty} \frac{h}{2^h} = \frac{1/2}{(1-1/2)^2} = 2
+\]
+führt. Damit kann die Laufzeit von Build-Max-Heap durch
+\[
+O \left( n \sum_{h=0}^{\lfloor log\,n \rfloor} \frac{h}{2^h}  \right) = O \left( n \sum_{h=0}^{\infty} \frac{h}{2^h}  \right) = O(2n) = O(n)
+\]
+abgeschätzt werden. Wir können also einen Max-Heap in linearer Zeit aus einem ungeordneten Feld konstruieren. \qed
+\begin{question}
+Die Wichtel müssen 5 mit Geschenken vollgestopfte Säcke dem Gewicht nach auf den
+Schlitten des Weihnachtsmanns verteilen. Dabei steht den Wichteln eine Waage zur
+Verfügung, mit der sie jeweils für zwei Säcke bestimmen können, ob der erste Sack leichter
+als der zweite Sack ist oder nicht. Da die Säcke sehr groß sind und die Zeit knapp ist,
+weigern die Wichtel sich die Waage mehr als 7 mal zu benutzen. Beschreiben Sie in
+Pseudocode einen Algorithmus an, der für die Wichtel die Säcke nach Gewicht sortiert,
+sodass die Waage dabei nicht mehr als 7 mal benutzt werden muss. (3 Punkte)\\
+\end{question}
+
+\begin{lstlisting}[
+    basicstyle=\small,
+    language=Java,
+    numbers=left,                    
+    numbersep=0pt,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+]
+sort(arr) { // arr = [a, b, c, d, e]
+    // Prepare a,b,c,d
+    if (arr[1] < arr[0])
+        swap(0, 1, arr); // => a < b
+    if (arr[3] < arr[2])
+        swap(2, 3, arr); // => c < d
+    if (arr[3] < arr[1]) {
+        swap(0, 2, arr);
+        swap(1, 3, arr); // => b < d
+    } 
+    // Results in:
+    // a<b<d && c<d
+
+    // Pinpoint e into [a,b,d] (c is kept in the end for later)
+    if (arr[4] < arr[1]) { // e < b
+        if (arr[4] < arr[0]) { // e < a
+            // e<a<b<d
+            swap(0, 4, arr); // 0,1,2,3,4 -> 4,1,2,3,0
+            swap(1, 4, arr); // 4,1,2,3,0 -> 4,0,2,3,1
+            swap(2, 4, arr); // 4,0,2,3,1 -> 4,0,1,3,2
+        } else { // e >= a
+            // a<=e<b<d
+            
+            swap(1, 4, arr); // 0,1,2,3,4 -> 0,4,2,3,1
+            swap(2, 4, arr); // 0,4,2,3,1 -> 0,4,1,3,2
+        }
+    } else { // e >= b
+        // a<b<d
+
+        if (arr[4] < arr[3]) { // e < d
+            // a<b<=e<d
+
+            swap(2, 4, arr); // 0,1,2,3,4 -> 0,1,4,3,2
+        } else { // e >= d
+            // a<b<d<=e
+            swap(2, 4, arr); // 0,1,2,3,4 -> 0,1,4,3,2
+            swap(2, 3, arr); // 0,1,4,3,2 -> 0,1,3,4,2
+        }
+    }
+    // The reordered result is now a<=b<=d<=e<=c
+
+    // Squeeze in c into [a,b,d]
+    if (arr[4] < arr[1]) { // c < b
+        if (arr[4] < arr[0]) { // c < a
+            // c<=a<=b<=d<=e 
+            swap(0, 4, arr); // 0,1,3,4,2 -> 2,1,3,4,0
+            swap(1, 4, arr); // 2,1,3,4,0 -> 2,0,3,4,1
+            swap(2, 4, arr); // 2,0,3,4,1 -> 2,0,1,4,3
+            swap(3, 4, arr); // 2,0,1,4,3 -> 2,0,1,3,4
+        } else { // c >= a
+            // a<=c<=b<=d<=e 
+            swap(1, 4, arr); // 0,1,3,4,2 -> 0,2,3,4,1
+            swap(2, 4, arr); // 0,2,3,4,1 -> 0,2,1,4,3
+            swap(3, 4, arr); // 0,2,1,4,3 -> 0,2,1,3,4
+        }
+    } else { // c >= b
+        if (arr[4] < arr[2]) { // c < d
+            // a<=b<=c<=d<=e 
+            swap(2, 4, arr); // 0,1,3,4,2 -> 0,1,2,4,3
+            swap(3, 4, arr); // 0,1,2,4,3 -> 0,1,2,3,4
+        } else { // c>=d
+            // a<=b<=d<=c<=e 
+            swap(3, 4, arr); // 0,1,3,4,2 -> 0,1,3,2,4
+        }
+    }
+}
+
+\end{lstlisting}
+\begin{question}
+Betrachten Sie ein Array $A[1,..,n]$, dass aus n ganzen Zahlen besteht. Für jede Zahl
+im Array gilt 0 $\leq$ $A[i]$ $\leq$ $k$ für eine Zahl $k > 0$ und $i \in {1, ..., n}$. Das Array A kann so verarbeitet werden, dass ein Algorithmus in konstanter Zeit für ein Intervall $[a..b]$ bestimmen kann, wie viele Zahlen aus A in dem Intervall enthalten sind.
+    \begin{enumerate}
+        \item Beschreiben Sie einen Algorithmus der A in $\Theta(n + k)$ verarbeitet und für eine
+        verarbeitete Eingabe in $O(1)$ ausgibt, wie viele Zahlen aus A in ein Intervall $[a...b]$
+        fallen. (4 Punkte)
+        \item Zeigen Sie, dass Ihr Algorithmus die Laufzeitschranken einhält. (1 Punkt)
+    \end{enumerate}
+\end{question}
+
+Zu Aufgabe (4a)
+\begin{lstlisting}[
+    basicstyle=\small,
+    language=Java,
+    numbers=left,                    
+    numbersep=0pt,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+]
+prepareArray(int[] a, int k){
+  int t = int[k + 2];
+
+  for(int i: a){
+    t[i]++;
+  }
+  for(int i=k-1; i >= 0; i--){
+    t[i] = t[i] + t[i + 1];
+  }
+
+  return t;
+}
+
+int count(int a, int b, arr){
+  a = max(a, 0);
+  b = min(b + 1, arr.length - 1);
+    
+  return arr[a] - arr[b];
+}
+\end{lstlisting}
+
+Zu Aufgabe (4b)\\
+In den Zeilen 4-6 durchlaufen wir das Array $A$, also alle $n$ Elemente $\implies \Theta(n)$ \\
+In den Zeilen 7-9 durchlaufen wir $k$ Elemente in unserem Hilfsarray $t$ $\implies \Theta(k)$\\
+Somit kommen wir auf eine Laufzeit von $\Theta(n+k)$ für die Verarbeitung unserer Arrays.\\
+In den Zeilen 14-18 führen wir zwei Checks durch (jeweils O(1)) und returnen anschließend eine Subtraktion (ebenfalls $O(1))$.\\
+Somit hat unsere Funktion die gewünschte Laufzeit von $O(1)$.
+
+\begin{question}
+    \begin{enumerate}
+        \item Erklären Sie, wie eine Queue durch zwei Stacks implementiert werden kann. (2 Punkte)
+        
+        Ein $Enqueue$ überprüft ob, der Stack $S2$ leer ist, falls nicht, müssen erst alle Elemente sequenziell von $S2$ gepoppt und nach $S1$ gepusht werden. Sobald $S2$ leer ist, pushen wir das zu enqueueende Element auf den Stack $S1$.
+        
+        Beim $Dequeue$ überprüfen wir ob der Stack $S1$ leer ist, falls nicht müssen alle Elemente vom Stack $S1$ sequenziell gepoppt und auf den Stack $S2$ gepusht werden. Sobald $S1$ leer ist, nimmt man das oberste Element aus $S2$ und gibt es als Ergebnis von dem Dequeue Aufruf aus.
+        
+        Falls beide Stacks leer sind ist ein Dequeue nicht möglich.
+        
+        \item Analysieren Sie die Laufzeit der Queueoperationen aus (a) unter der Annahme, dass die Stack-Operationen Zeit O(1) benötigen. (1 Punkt)
+        
+        $Enqueue$ und $Dequeue$ laufen in $O(1)$, außer es wurde direkt vor einem $Enqueue$ ein $Dequeue$ oder direkt vor einem $Dequeue$ ein $Enqueue$ ausgeführt. In diesen beiden Fällen kommt ein Overhead von $O(n)$ fürs Umschieben der Elemente von einem Stack zum anderen hinzu.
+    \end{enumerate} 
+\end{question}
+
+
+\begin{question}
+    \textbf{Bonusaufgabe}\\
+    Zeigen Sie, dass es keinen Algorithmus $A$ gaben kann, der die folgenden drei Eigenschaften gleichzeitig erfüllt. (3 Punkte)
+    \begin{enumerate}
+        \item Der Algorithmus $A$ benutzt wie ein Vergleichssortierer nur Vergleiche, Zuweisungen, Kopierungen, usw.
+        \item Der Algorithmus $A$ entfernt aus einem max-Heap das Maximum und stellt die         max-Heap-Eigenschaft wieder her.
+        \item Der Algorithmus $A$ hat Laufzeit O(1).
+    \end{enumerate}
+\end{question}
+
+
+Wir wissen, dass man ein beliebig sortiertes Array mit $n$  Elementen in $O(n)$ in einen Heap mit der Build-Max-Heap überführen kann. (siehe Zettel 4, Aufgabe 2)\\
+Angenommen es gibt einen solchen Algorithmus $A$. Dann führen wir Algorithmus $A$ für alle $n$ Elemente in einem Heap aus sukzessiv aus. Dies extrahiert immer das Maximum aus dem Heap und stellt die max-Heap-Eigenschaft wieder her (Eigenschaft (b)). Und das nach Eigenschaft (c) mit einer Laufzeit von $O(1)$ $\implies n \cdot O(1) = O(n)$. Für die Gesamtlaufzeit ergibt sich dann aus der Laufzeit von Build-Max-Heap plus $n$-maliges Aufrufen von Algorithmus $A$ 
+
+$$O(n) + n \cdot O(1) = O(n) +O(n) = O(2n) = O(n)$$
+
+Wir wissen, dass vergleichsbasierte-Sortieralgorithmen eine theoretisch kleinste obere Schranke von $O(n\,log\,n)$ haben, das bildet einen Widerspruch zur Eigenschaft (a) des Algorithmus $A$. Also kann es so einen Algorithmus $A$ mit den gegebenen drei Eigenschaften nicht geben. \qed
+\end{document}

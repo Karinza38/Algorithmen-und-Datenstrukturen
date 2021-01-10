@@ -96,9 +96,9 @@
 \newcommand*\participantThree[1]{\renewcommand*{\@participantThree}{#1}}
 \newcommand*\participantFour[1]{\renewcommand*{\@participantFour}{#1}}
 \newcommand*{\@participants}{
-	\begin{tabular}{|l|c|c|c|c|c|}
+	\begin{tabular}{|l|c|c|c|c|c|c|c|}
 		\hline 
-		\ADauthor & \ADgroup & 1 & 2 & 3 & 4 \\ 
+		\ADauthor & \ADgroup & 1 & 2 & 3 & 4 & 5 & 6\\ 
 		\hline 
 		\@participantOne\\
 		\hline 
