@@ -34,27 +34,55 @@
 
 \begin{question}
     \begin{enumerate}
-    \item Ist ein aufsteigend sortiertes Array ein min-Heap oder ein max-Heap? Begründen Sie Ihre Antwort. (1 Punkt) \\\\
+    \item Ist ein aufsteigend sortiertes Array ein min-Heap oder ein max-Heap? Begründen Sie Ihre Antwort. (1 Punkt) \\
+    
         Sei $I(a_i)$ der Index vom Element $a_i$ im Array $a$.
         
         In einer aufsteigend sortierten Folge $a = \langle a_1, a_2, \ldots, a_n \rangle$ gilt für alle verschiedene $a_i, a_j \in a$ und $i < j : a_i \leq a_j$. Die Kinder von einem Element $a_i$ in einem Heap werden immer derart ermittelt: linkes Kind $ I(a_{i_l})= 2 \cdot I(a_i)$ und rechtes Kind $I(a_{i_r})= 2 \cdot I(a_i)+ 1$. Da $a_i \leq a_{i_l} \land a_i \leq a_{i_r}$ gilt, ist die min-Heap-Eigenschaft für alle $a_i \in a$ erfüllt. Es handelt sich also bei aufsteigend sortierten Arrays immer um einen min-Heaps. \qed
         
-    \item Zeigen Sie, dass ein Heap mit $n$ Elementen eine Höhe $h \in \Theta(log \; n)$ hat. (1 Punkt) \\\\
-        Da Heaps links-vollständige Binärbäume sind, hat der Knoten an der Stelle $n$ die größte Tiefe. Wenn wir dessen Höhe ermitteln möchten, zählen wir die Anzahl $h$ der Vorfahren vom Knoten $n$. Das ist gleichbedeutend zu der Ungleichung $(\lfloor \frac{n}{2} \rfloor)^h > 0$ wobei $x$ maximal sein soll.
-\[
-        (\lfloor \frac{n}{2} \rfloor)^h > 0
-        \iff 
-\]
-        Das Ergebnis davon ist $\lfloor log \; n \rfloor = h \implies h \in \Theta(log \; n)$. \qed
-    \item Zeigen Sie, dass ein Heap der Größe $n$ maximal $\lceil \frac{n}{2^{h+1}} \rceil$ Knoten der Höhe $h$ hat. (2 Punkte)
+    \item Zeigen Sie, dass ein Heap mit $n$ Elementen eine Höhe $h \in \Theta(log \; n)$ hat. (1 Punkt) \\
     
-    Da Heaps links-vollständige Binärbäume sind, ist die Einfügeposition eindeutig.\\
-    Wenn man in einem vollständigen Heap der Höhe $h_0$ mit $2^h_0-1=n$ Knoten, einen Knoten hinzufügt, erhöht sich die Tiefe des Baums um 1; die Anzahl der Knoten auf jeder Höhe bleibt gleich, außer auf der neuen höchsten Höhe $h_0+1$. Wenn man einen zweiten Knoten hinzufügt, erhöht sich die Anzahl der Knoten auf Höhe 0 um 1. Für alle 2 Knoten, die auf Höhe $h$ hinzugefügt werden, erhöht sich die Anzahl der Knoten auf der Höhe $h+1$ um 1. Entsprechend ändert sich die Anzahl der Knoten mit $h=2$ für alle 4 Knoten, die hinzugefügt werden.
-    Also ändert sich für alle $2^{h+1}$ Änderungen die Anzahl der Knoten auf der Ebene $h$.
-    
-    Daraus folgt, dass auf Höhe $h_0$ maximal $\lceil \frac{n}{2^{h_0+1}} \rceil$ Knoten sind, was zu Zeigen war.
+        Da Heaps links-vollständige Binärbäume sind, hat der Knoten an der Stelle $n$ die größte Tiefe. Wenn wir dessen Tiefe ermitteln möchten, zählen wir die Anzahl $h$ der Vorfahren vom Knoten $n$.
+        Für den Knoten $n$ können wir auch $2^m-1 + k$ schreiben, wobei m größtmöglich sein soll.
+        Somit hat der Heap eine Höhe von $m-1$ und $k$ Blätter in der größten Tiefe des Baums.
+        Die Höhe des Baums ermittelt sich nun aus dem längsten einfache Weg von der Wurzel zu einem der $k$ Blätter. Dieser Weg muss die Länge $m$ besitzen. So wie wir $m$ definiert haben, sieht man leicht, dass $m= \lfloor log\,n \rfloor$ gilt. \qed
 
-    \item Zeigen Sie, dass in einem Heap die Anzahl der inneren Knoten um eins kleiner oder gleich der Anzahl an Blättern ist. (2 Punkte)
+    \item Zeigen Sie, dass ein Heap der Größe $n$ maximal $\lceil \frac{n}{2^{h+1}} \rceil$ Knoten der Höhe $h$ hat. (2 Punkte) \\
+        
+        Hierzu brauchen wir folgendes Lemma:\\
+        \emph{Behauptung:} Die Indizes der Blätter in einem $n$-elementigen Heap befinden sich im Intervall $\left[\lfloor n/2 \rfloor+1; n\right]$.
+        \begin{proof}
+        Wir betrachten das linke Kind vom Knoten an der Stelle $\lfloor n/2 \rfloor + 1$.
+        
+        $$\begin{tabular}{rl}
+            Left(\lfloor n/2 \rfloor+1) &= 2(\lfloor n/2 \rfloor+1)  \\
+             & \geq 2(n/2-1)+2) \\
+             & = n - 2 + 2 \\
+             & = n
+        \end{tabular}$$
+        
+        Da der Index vom linken Kind größer als die Anzahl der Elemente im Heap ist, hat der Knoten keine Kinder und ist demnach ein Blatt. Das selbe gilt für alle Knoten mit größerem Index.
+        \end{proof}
+        
+        \begin{proof}
+            Aus dem obigen Lemma wissen wir, dass die zweite Hälfte (inkl. des mittleren Elements, wenn $n$ ungerade ist) des Heaps aus Blättern besteht. Also gilt für jeden Heap mit $n$, dass dieser $\lceil n/2 \rceil$ Blätter hat. Wir führen den Beweis über die Höhe. Sei $n_h$ die Anzahl der Knoten auf Höhe $h$. Der Basisfall gilt, denn $n_0 = \lceil n/2 \rceil$ ist exakt die Anzahl an Blättern in einem Heap der Größe $n$.
+            
+            Nehmen wir nun an, dass es für die Höhe $h-1$ gilt. Nun beweisen wir, dass es auch für die Höhe $h$ gilt. \\
+            Falls $n_{h-1}$ gerade ist, dann hat jeder Knoten auf Höhe $h$ genau zwei Kinder, daraus folgt $n_h = h_{h-1}/2 = \lfloor n_h-1/2 \rfloor$. Wenn $n_{h-1}$ ungerade ist, hat ein Knoten auf Höhe $h$ nur ein Kind die restlichen aber zwei Kinder, daraus folgern wir $n_h = \lfloor n_{h-1}/2 \rfloor + 1 = \rceil n_{h-1}/2 \rceil$. Genauer folgt daraus
+
+        \begin{table}[]
+            \renewcommand*{\arraystretch}{1.4}
+        $$\begin{tabular}{rl}
+            n_h &= \lceil n_h-1/2 \rceil \\
+             & \leq \left\lceil \frac{1}{2} \cdot \left\lceil \frac{n}{2^{(h-1)+1}} \right\rceil \right\rceil \\
+             & = \left\lceil \frac{1}{2} \cdot \left\lceil \frac{n}{2^h} \right\rceil \right\rceil \\
+             & = \left\lceil \frac{n}{2^{h+1}} \right\rceil \\
+        \end{tabular}$$
+        \end{table}
+        also gilt es auch für die Höhe $h$.
+        \end{proof}
+
+    \item Zeigen Sie, dass in einem Heap die Anzahl der inneren Knoten um eins kleiner oder gleich der Anzahl an Blättern ist. (2 Punkte) \\
     
     Wir gehen davon aus, dass Knoten in einem Binärbaum mit nur einem Kindknoten auch zu den innere Knoten gezählt werden.
     
@@ -274,8 +302,8 @@ Somit hat unsere Funktion die gewünschte Laufzeit von $O(1)$.
 \end{question}
 
 
-Wir wissen, dass man ein beliebig sortiertes Array mit $n$  Elementen in $O(n)$ in einen Heap mit der Build-Max-Heap überführen kann. (siehe Zettel 4, Aufgabe 2)\\
-Angenommen es gibt einen solchen Algorithmus $A$. Dann führen wir Algorithmus $A$ für alle $n$ Elemente in einem Heap aus sukzessiv aus. Dies extrahiert immer das Maximum aus dem Heap und stellt die max-Heap-Eigenschaft wieder her (Eigenschaft (b)). Und das nach Eigenschaft (c) mit einer Laufzeit von $O(1)$ $\implies n \cdot O(1) = O(n)$. Für die Gesamtlaufzeit ergibt sich dann aus der Laufzeit von Build-Max-Heap plus $n$-maliges Aufrufen von Algorithmus $A$ 
+Wir wissen, dass man ein unsortiertes Array mit $n$  Elementen mit einer Laufzeit von $O(n)$ in einen Heap $h$ mit der Build-Max-Heap überführen kann. (siehe Zettel 4, Aufgabe 2)\\
+Angenommen es gibt einen solchen Algorithmus $A$. Dann führen wir Algorithmus $A$ für alle $n$ Elemente in Heap $h$ aus sukzessiv aus. Dies extrahiert immer das Maximum aus dem Heap und stellt die max-Heap-Eigenschaft wieder her (Eigenschaft (b)). Und das nach Eigenschaft (c) mit einer Laufzeit von $O(1)$ $\implies n \cdot O(1) = O(n)$. Für die Gesamtlaufzeit ergibt sich dann aus der Laufzeit von Build-Max-Heap plus die Laufzeit vom $n$-maligen Aufrufen von Algorithmus $A$ 
 
 $$O(n) + n \cdot O(1) = O(n) +O(n) = O(2n) = O(n)$$
 
