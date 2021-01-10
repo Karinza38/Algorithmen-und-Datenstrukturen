@@ -258,7 +258,7 @@ Zu Aufgabe (4a)
     stringstyle=\color{codepurple},
     basicstyle=\ttfamily\footnotesize,
 ]
-prepareArray(int[] a, int k){
+int[] prepareArray(int[] a, int k){
   int t = int[k + 2];
 
   for(int i: a){
@@ -271,20 +271,27 @@ prepareArray(int[] a, int k){
   return t;
 }
 
-int count(int a, int b, arr){
+int count(int a, int b, int[] arr){
   a = max(a, 0);
   b = min(b + 1, arr.length - 1);
     
   return arr[a] - arr[b];
 }
 \end{lstlisting}
+Seien $k, a, b$ wie in der Aufgabenstellung beschrieben. \\
+Wenn man ein unsortiertes Array $a$ hat, kann man ein vorbereitetes Array $p$ mit dem Aufruf $p = prepareArray(a,k)$  erzeugen. Durch Eingabe eines beliebigen Intervalls $I=[a,\,b]$ kann man mit Hilfe von $count(a, b, p)$ die Anzahl der Zahlen, welche in $I$ liegen, bekommen.
 
 \emph{Behauptung:} Unser Algorithmus hält die Laufzeitschranken aus Aufgabenteil \emph{(a)} ein.
 \begin{proof}
-    In den Zeilen 4-6 durchlaufen wir das Array $A$, also alle $n$ Elemente $\implies \Theta(n)$ \\
-    In den Zeilen 7-9 durchlaufen wir $k$ Elemente in unserem Hilfsarray $t$ $\implies \Theta(k)$\\
-    Somit kommen wir auf eine Laufzeit von $\Theta(n+k)$ für die Verarbeitung unserer Arrays.\\
-    In den Zeilen 14-18 führen wir zwei Checks durch (jeweils O(1)) und returnen anschließend eine Subtraktion (ebenfalls $O(1))$.\\
+    In den Zeilen 4-6 durchlaufen wir das Array $A$, also alle $n$ Elemente\\
+    $\implies \Theta(n)$
+    
+    In den Zeilen 7-9 durchlaufen wir $k$ Elemente in unserem Hilfsarray $t$\\
+    $\implies \Theta(k)$
+    
+    Somit kommen wir auf eine Laufzeit von $\Theta(n+k)$ für die Verarbeitung unseres Arrays.\\
+    In den Zeilen 14-18 führen wir in jeweils $O(1)$ zwei Checks durch und returnen anschließend eine Subtraktion, ebenfalls in $O(1)$.
+    
     Somit hat unsere zweite Funktion die gewünschte Laufzeit von $O(1)$.
 \end{proof}
 \begin{question}
