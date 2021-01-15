@@ -70,12 +70,12 @@
         \begin{proof}
             Aus dem obigen Lemma wissen wir, dass die zweite Hälfte (inkl. des mittleren Elements, wenn $n$ ungerade ist) des Heaps aus Blättern besteht. Also gilt für jeden Heap mit $n$, dass dieser $\lceil n/2 \rceil$ Blätter hat. Wir führen den Beweis über die Höhe. Sei $n_h$ die Anzahl der Knoten auf Höhe $h$. Der Basisfall gilt, denn $n_0 = \lceil n/2 \rceil$ ist exakt die Anzahl an Blättern in einem Heap der Größe $n$.\\
             Nehmen wir nun an, dass es für die Höhe $h-1$ gilt. Nun beweisen wir, dass es auch für die Höhe $h$ gilt. \\
-            Falls $n_{h-1}$ gerade ist, dann hat jeder Knoten auf Höhe $h$ genau zwei Kinder, daraus folgt $n_h = h_{h-1}/2 = \lfloor n_h-1/2 \rfloor$. Wenn $n_{h-1}$ ungerade ist, hat ein Knoten auf Höhe $h$ nur ein Kind die restlichen aber zwei Kinder, daraus folgern wir $n_h = \lfloor n_{h-1}/2 \rfloor + 1 = \rceil n_{h-1}/2 \rceil$. Genauer folgt daraus
+            Falls $n_{h-1}$ gerade ist, dann hat jeder Knoten auf Höhe $h$ genau zwei Kinder, daraus folgt $n_h = h_{h-1}/2 = \lfloor n_h-1/2 \rfloor$. Wenn $n_{h-1}$ ungerade ist, hat ein Knoten auf Höhe $h$ nur ein Kind die restlichen aber zwei Kinder, daraus folgern wir $n_h = \lfloor n_{h-1}/2 \rfloor + 1 = \lceil \frac{n_{h-1}}{2} \rceil$. Genauer folgt daraus
 
         \begin{table}[]
             \renewcommand*{\arraystretch}{1.4}
         $$\begin{tabular}{rl}
-            n_h &= \lceil n_h-1/2 \rceil \\
+            n_h &= \left\lceil \frac{n_{h-1}}{2}\right\rceil \\
              & \leq \left\lceil \frac{1}{2} \cdot \left\lceil \frac{n}{2^{(h-1)+1}} \right\rceil \right\rceil \\
              & = \left\lceil \frac{1}{2} \cdot \left\lceil \frac{n}{2^h} \right\rceil \right\rceil \\
              & = \left\lceil \frac{n}{2^{h+1}} \right\rceil \\
