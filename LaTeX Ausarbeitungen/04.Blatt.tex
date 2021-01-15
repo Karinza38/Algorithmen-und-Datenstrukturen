@@ -304,6 +304,10 @@ Wenn man ein unsortiertes Array $a$ hat, kann man ein vorbereitetes Array $p$ mi
             Beim $Dequeue$ überprüfen wir ob der Stack $S1$ leer ist, falls nicht müssen alle Elemente vom Stack $S1$ sequenziell gepoppt und auf den Stack $S2$ gepusht werden. Sobald $S1$ leer ist, nimmt man das oberste Element aus $S2$ und gibt es als Ergebnis von dem Dequeue Aufruf aus.
             
             Falls beide Stacks leer sind ist ein Dequeue nicht möglich.
+            
+            Die $Size$ Operation bekommen wir durch $size(S1) + size(S2)$.
+            
+            Die $peek$ oder $first$ Operation auf der Queue wird analog zu dequeue realisiert, außer dass das zu dequeuende Element nicht von $S2$ gepoppt wird, sondern $first(S2)$ als ausgabe von der $peek$ Operation auf der Queue ausgegeben.
         \end{proof}
         \item Analysieren Sie die Laufzeit der Queueoperationen aus (a) unter der Annahme, dass die Stack-Operationen Zeit O(1) benötigen. (1 Punkt)
         \begin{proof}
