@@ -3,6 +3,7 @@ package de.uni_hamburg.ad;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigInteger;
@@ -98,39 +99,22 @@ class RecursionTest {
         assertThat(result.toString(), is("1956698954537636483025042870861612222610662331835249639210381585479775634302137419374772075084213726437322921037719052242584750607840898913050144515435265777900861485468823328728658223700434839114752508939474351483771005210026449340051193671486711474116071761613448268516439080671618364279360630417573344923417802701336681378044524810490847064224366366648009878878069302992879752382875623831347678963616180474913904648045111029249079353689340632629797003456825302560117358038835044693904958748595220753035673179007921769879941010965697019151927865819092468181145894550982005132080983756708245482993615575815085128566638464058946680031499504558760963247860750008690887012992668936129189274702951988760534198518183527828322405299037453670623281833513970844111526831872651389163232189137506477593826502328668626834586442428471500905402520278453493474958845851278544826863108935628944558462777260912204800701814972641416433864665953501926611190242908488881351359956610988903457008846167455724404377092349232264238263965873835574391926438740255750019665816451668298067310511542403940538940972847791379863065817634855884935653244703608877900815270982000501"));
     }
 
-    // 23ms
-    @Test void fibfastIter_huge() {
+    @ParameterizedTest
+    @CsvSource({"10000,2090", // 23ms
+                    "50000,10450", // 131ms
+                    "500000,104494" // 5s
+    })
+    void fibfastIter_huge(String input, String expected) {
         // Arrange
         Recursion rec = new Recursion();
+        int inputInt = Integer.parseInt(input);
+        int expectedInt = Integer.parseInt(expected);
 
         // Act
-        final var result = rec.fibFastIter(10_000);
+        final var result = rec.fibFastIter(inputInt);
 
         // Assert
-        assertThat(result.toString().length(), is(2090));
+        assertThat(result.toString().length(), is(expectedInt));
     }
 
-    // 131ms
-    @Test void fibfastIter_prettyHuge() {
-        // Arrange
-        Recursion rec = new Recursion();
-
-        // Act
-        final var result = rec.fibFastIter(50_000);
-
-        // Assert
-        assertThat(result.toString().length(), is(10450));
-    }
-
-    // 5s
-    @Test void fibfastIter_humongous() {
-        // Arrange
-        Recursion rec = new Recursion();
-
-        // Act
-        final var result = rec.fibFastIter(500_000);
-
-        // Assert
-        assertThat(result.toString().length(), is(104_494));
-    }
 }
