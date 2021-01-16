@@ -40,4 +40,16 @@ public class Recursion {
         }
         return dyn.get(n);
     }
+
+    BigInteger fibFastestIter(int n) {
+        var a = new BigInteger[] { BigInteger.ONE, BigInteger.ONE, BigInteger.ZERO };
+        int i = 1;
+        while (n >= i) {
+            var n1 = a[(i + 2) % 3];
+            var n2 = a[(i + 1) % 3];
+            a[(i++) % 3] = n1.add(n2);
+        }
+        return a[n % 3];
+    }
+
 }
