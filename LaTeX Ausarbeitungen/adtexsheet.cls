@@ -95,10 +95,25 @@
 \newcommand*\participantTwo[1]{\renewcommand*{\@participantTwo}{#1}}
 \newcommand*\participantThree[1]{\renewcommand*{\@participantThree}{#1}}
 \newcommand*\participantFour[1]{\renewcommand*{\@participantFour}{#1}}
+%\newcommand*{\@participants}{
+%	\begin{tabular}{|l|c|c|c|c|c|c|c|}
+%		\hline 
+%		\ADauthor & \ADgroup & 1 & 2 & 3 & 4 & 5 & 6\\ 
+%		\hline 
+%		\@participantOne\\
+%		\hline 
+%		\@participantTwo\\
+%		\hline 
+%		\@participantThree\\
+%		\hline 
+%		\@participantFour\\
+%		\hline 
+%	\end{tabular}
+%}
 \newcommand*{\@participants}{
 	\begin{tabular}{|l|c|c|c|c|c|c|c|}
 		\hline 
-		\ADauthor & \ADgroup & 1 & 2 & 3 & 4 & 5 & 6\\ 
+		\ADauthor & \ADgroup & 1 & 2 & 3 & 4 & 5\\ 
 		\hline 
 		\@participantOne\\
 		\hline 
