@@ -58,6 +58,15 @@ public class PriorityHeap<T>
 		return _heap.get((index + 1) * 2);
 	}
 
+	public boolean isHeap() {
+		for(int i = _size-1; i > 0; --i) {
+			T x = _heap.get(i);
+			T parent = parent(x);
+			if (_comparator.compare(x, parent) < 1) return false;
+		}
+		return true;
+	}
+
 	private void buildHeap(T[] arr)
 	{
 		//TODO: implement

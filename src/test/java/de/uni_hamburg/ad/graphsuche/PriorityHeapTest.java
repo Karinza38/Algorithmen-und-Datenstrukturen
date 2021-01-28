@@ -1,5 +1,6 @@
 package de.uni_hamburg.ad.graphsuche;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -136,6 +137,27 @@ class PriorityHeapTest
 		assertThat(leftChild, is(expected));
 	}
 
+	@Test
+	void isHeap_sorted_isTrue() {
+		// Arrange
+		PriorityHeap<Integer> heap = createHeap(14);
+
+		// Act
+		var isHeap = heap.isHeap();
+
+		assertThat(isHeap, is(true));
+	}
+
+	@Test
+	void isHeap_2and1_isFalse() {
+		// Arrange
+		PriorityHeap<Integer> heap = new PriorityHeap<>(new Integer[]{2, 1}, Comparator.naturalOrder());
+
+		// Act
+		var isHeap = heap.isHeap();
+
+		assertThat(isHeap, is(false));
+	}
 
 	private PriorityHeap<Integer> createHeap(int range)
 	{
