@@ -8,9 +8,9 @@ import java.util.List;
 public class PriorityHeap<T>
 {
 
-	private final Comparator<T> _comparator;
-	private final int _size;
-	private List<T> _heap;
+	private final Comparator<T> comparator;
+	private final int size;
+	private List<T> heap;
 
 	@SuppressWarnings("unchecked")
 	public PriorityHeap()
@@ -21,48 +21,48 @@ public class PriorityHeap<T>
 	public PriorityHeap(T[] arr, Comparator<T> comparator)
 	{
 		buildHeap(arr);
-		_size = arr.length;
-		_comparator = comparator;
+		size = arr.length;
+		this.comparator = comparator;
 	}
 
 	public PriorityHeap(Comparator<T> comparator)
 	{
-		_heap = new ArrayList<>();
-		_size = 0;
-		_comparator = comparator;
+		heap = new ArrayList<>();
+		size = 0;
+		this.comparator = comparator;
 	}
 
 	public T parent(T x)
 	{
-		int index = _heap.indexOf(x);
+		int index = heap.indexOf(x);
 		if (index < 1) return null;
-		return _heap.get((index - 1) / 2);
+		return heap.get((index - 1) / 2);
 	}
 
 	public T left(T x)
 	{
-		final int index = _heap.indexOf(x);
+		final int index = heap.indexOf(x);
 		final int targetIndex = ((index + 1) * 2) - 1;
-		if (index == -1 || targetIndex >= _size)
+		if (index == -1 || targetIndex >= size)
 			return null;
 
-		return _heap.get(targetIndex);
+		return heap.get(targetIndex);
 	}
 
 	public T right(T x)
 	{
-		int index = _heap.indexOf(x);
-		if (index == -1 || index >= (_size-1) / 2)
+		int index = heap.indexOf(x);
+		if (index == -1 || index >= (size -1) / 2)
 			return null;
 
-		return _heap.get((index + 1) * 2);
+		return heap.get((index + 1) * 2);
 	}
 
 	public boolean isHeap() {
-		for(int i = _size-1; i > 0; --i) {
-			T x = _heap.get(i);
+		for(int i = size -1; i > 0; --i) {
+			T x = heap.get(i);
 			T parent = parent(x);
-			if (_comparator.compare(x, parent) < 1) return false;
+			if (comparator.compare(x, parent) < 1) return false;
 		}
 		return true;
 	}
@@ -70,6 +70,6 @@ public class PriorityHeap<T>
 	private void buildHeap(T[] arr)
 	{
 		//TODO: implement
-		_heap = new ArrayList<>(Arrays.asList(arr));
+		heap = new ArrayList<>(Arrays.asList(arr));
 	}
 }
