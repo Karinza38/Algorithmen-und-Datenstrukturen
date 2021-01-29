@@ -31,6 +31,7 @@
 \usetikzlibrary{shapes}
 \usepackage{listings}
 \usepackage{stmaryrd}
+\usepackage{cancel}
 
 \begin{document}
 
@@ -39,7 +40,6 @@
     \begin{enumerate}
         \item durch Verkettung (i = 0), (2 Punkte)
         \item durch offene Adressierung. (2 Punkte)
-        
         \begin{table}[]
             \centering
             \newcommand{\sep}{\rightarrow}
@@ -88,7 +88,7 @@
         \emph{Behauptung:} Seien $B$ und $C$ wie oben definiert, dann gilt $$\forall b \in B \forall c \in C: b \leq c$$
         \begin{proof} Sei der Suchbaum wie folgt
         \begin{center}
-            \begin{tikzpicture}[every node/.style={circle,draw=black}]
+            \begin{tikzpicture}[every node/.style={circle,draw=black}, level distance=5mm]
             \node{4}[draw=red]
                 child { node{2}
                     child { node{1} }
@@ -98,16 +98,10 @@
             ;
             \end{tikzpicture}
         \end{center}
-        und $1$ der gesuchte Wert. Dann sehen die Mengen so aus: 
-\[
-A=\emptyset, \quad B=\{4,2,1\}, \quad C=\{3\}
-\]
-        Hierbei ist $4 \in B \land 3 \in C$ aber $4 > 3$ ist, was einen Widerspruch zur Behauptung liefert.
+        und $1$ der gesuchte Wert. Dann sehen die Mengen so aus: $$A=\emptyset, \quad B=\{4,2,1\}, \quad C=\{3\}$$ Hierbei ist $4 \in B \land 3 \in C$ aber $4 > 3$ ist, was einen Widerspruch zur Behauptung liefert.
         \end{proof}
         
-        \newpage
-        \item Aus der Vorlesung ist Ihnen bekannt, dass zum Suchen in einem vollständigen Binärbaum $O(log_2\,n)$ Zeit benötigt wird. Wie ist die asymptotische Laufzeit, wenn stattdessen jeder innere Knoten bis zu $3$ Kinder haben darf? Wie, bei bis zu $log_2\,n$ Kindern? (2 Punkte)
-        
+        \item[(b Teil 1)] Aus der Vorlesung ist Ihnen bekannt, dass zum Suchen in einem vollständigen Binärbaum $O(log_2\,n)$ Zeit benötigt wird. Wie ist die asymptotische Laufzeit, wenn stattdessen jeder innere Knoten bis zu $3$ Kinder haben darf? Wie, bei bis zu $log_2\,n$ Kindern? (2 Punkte)
         \begin{behauptung}
         Ein ternärer Suchbaum ist ein Suchbaum bei dem jeder innere Knoten bis zu $3$ Kindern haben kann. Die Suche in so einem vollständigen Baum benötigt $O(log_2\, n)$ Zeit.
         \end{behauptung}
@@ -118,11 +112,15 @@ O(2 \cdot log_3\,n) = O\left(2 \cdot \frac{log_2\, n}{log_2\, 3}\right) = O(log_
 \]
         Zeit benötigen.
         \end{proof}
+        \item[(b Teil 2)] Mit $log_2\, n$ Kindern.
         
-        Teil zwei. Die Höhe eines solchen Suchbaumes wächst in $O(log_2(n))$ und die Anzahl der nötigen Vergleiche pro Knoten wächst auch in Abhängigkeit von $O(log_2(n))$. Für die Laufzeit der Suche ergibt sich dann:
-\[
-O\left(log_{log_2(n)}(n) \cdot log_2(n)\right)
-.\]
+        Die Höhe eines solchen Suchbaumes wächst in $O(log_2(n))$ und die Anzahl der nötigen Vergleiche pro Knoten wächst auch in Abhängigkeit von $log_2(n)$. Jedoch kann man bei den Vergleichen in einem Knoten eine Binärsuche mit den Kindern durchführen, daher ist der Term für die Vergleiche in $O(log_2 (log_2\, n))$. Für die Laufzeit der Suche ergibt sich dann:
+        \begin{align*}
+            &O\left(log_2(log_2\, n) \cdot log_{log_2(n)}(n)\right) \\
+            &\stackrel{Basenwechsel}{=} O\left(log_2(log_2\, n) \cdot \frac{log_2\, n}{log_2(log_2\, n)}\right) \\
+            &\stackrel{kürzen}{=} O\left(\cancel{log_2(log_2\, n)} \cdot \frac{log_2\, n}{\cancel{log_2(log_2\, n)}}\right) \\
+            &= O(log_2\, n)
+        \end{align*}
     \end{enumerate}
 \end{question}
 
@@ -209,6 +207,7 @@ O\left(log_{log_2(n)}(n) \cdot log_2(n)\right)
         
         Als letzten Schritt fügen wir eine $2$ hinzu. $2<3$, aber $2>1$, deshalb wird die $2$ zum rechten Kind der $1$. Somit wurden alle Schlüssel hinzugefügt und der AVL Baum ist komplett (siehe Abb. \ref{fig:baum8})). \hfill \qedsymbol
 
+        \newpage
         \item  Zeigen Sie, für einen beliebigen AVL-Baum gilt: $n \leq 2^{h+1} - 1$ (2 Punkte)
         \begin{proof}
             Für vollständige Binärbäume der Höhe $h$ wissen wir dass diese $n = 2^{h+1} - 1$ Knoten haben. Jeder andere AVL-Baum der Höhe $h$ muss folglich weniger Elemente besitzen, sodass $n \leq 2^{h+1} - 1$ gilt.
@@ -248,7 +247,7 @@ O\left(log_{log_2(n)}(n) \cdot log_2(n)\right)
 \]
             (2 Punkte)
             \begin{proof}
-                Sei $G$ ein kantenloser Graph mit mindestens $2$ Kanten. Für $G$ gilt $deg(V_i) = 2 \cdot 0 = 0$.
+                Sei $G$ ein kantenloser Graph mit mindestens $2$ Knoten. Für $G$ gilt $deg(V_i) = 2 \cdot 0 = 0$.
                 
                 Für jede Kante $e = (v_1, v_2)$, die wir hinzufügen, erhöhen wir den Grad für $v_1$ und $v_2$ um jeweils $1$.
                 Da eine neue Kante immer $2$ Knoten verbindet, muss die Summe aller Grade immer doppelt so groß sein, wie die Anzahl der Kanten. Die Behauptung stimmt.
