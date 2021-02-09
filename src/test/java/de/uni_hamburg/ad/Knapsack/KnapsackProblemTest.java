@@ -3,6 +3,7 @@ package de.uni_hamburg.ad.Knapsack;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
+import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -16,9 +17,9 @@ class KnapsackProblemTest {
   @Test
   public void knapSackTest1(){
     double[] values = {1,3,2,6,5};
-    int[] volumes = {3,2,2,5,10};
+    int[] volumes =   {3,2,2,5,10};
     int maxVolume = 12;
-    assertThat(knapsackProblem.knapSack(values, volumes, maxVolume),is(11.0));
+    assertThat(knapsackProblem.knapSack(values, volumes, maxVolume),is(12.0));
   }
   
   
@@ -74,4 +75,17 @@ class KnapsackProblemTest {
     assertThat(knapsackProblem.knapSack(values, volumes, maxVolume),is(100.0));
   }
   
+  @Test
+  public void knapSackTest8(){
+    Random rand = new Random();
+    double[] values = new double[100];
+    int[] volumes = new int[100];
+    for(int i = 0; i < 100; ++i){
+      int n = rand.nextInt(100);
+      values[i] = n;
+      volumes[i] = i;
+    }
+    int maxVolume = 4951/4;
+    assertThat(knapsackProblem.knapSack(values, volumes, maxVolume),is(100));
+  }
 }
