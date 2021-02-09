@@ -3,7 +3,6 @@ package de.uni_hamburg.ad.Knapsack;
 public class KnapsackProblem {
   
   
-  //TODO funktioniert noch nicht bei den Tests aus Gründen
   
   public double knapSack(double[] values, int[] volumes, int capacity) {
     assert values.length == volumes.length;
@@ -11,7 +10,7 @@ public class KnapsackProblem {
     double[][] knapsackTable = new double[numOfItems + 1][capacity + 1];
     
     for (int i = 1; i <= numOfItems; i++) {
-      for (int w = 1; w <= capacity; w++) {
+      for (int w = 0; w <= capacity; w++) {
         double notTakingItem = knapsackTable[i - 1][w];
         double takingItem = 0;
         
