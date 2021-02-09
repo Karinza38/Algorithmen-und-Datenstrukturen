@@ -74,18 +74,4 @@ class KnapsackProblemTest {
     int maxVolume = 100;
     assertThat(knapsackProblem.knapSack(values, volumes, maxVolume),is(100.0));
   }
-  
-  @Test
-  public void knapSackTest8(){
-    Random rand = new Random();
-    double[] values = new double[100];
-    int[] volumes = new int[100];
-    for(int i = 0; i < 100; ++i){
-      int n = rand.nextInt(100);
-      values[i] = n;
-      volumes[i] = i;
-    }
-    int maxVolume = 4951/4;
-    assertThat(knapsackProblem.knapSack(values, volumes, maxVolume),is(100));
-  }
 }
