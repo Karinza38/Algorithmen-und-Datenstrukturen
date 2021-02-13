@@ -12,10 +12,15 @@ class LongestPathProblemTest {
   LongestPathProblem lpp = new LongestPathProblem();
   
   @Test
-  public void calc1() {
+  void calc1() {
+    // Arrange
     int[][] arr = new int[][]{{1, 2}, {2, 3}};
     int N = 3;
-    
-    assertThat(lpp.calc(N, arr), is(2));
+
+    // Act
+    final int result = lpp.calc(N, arr);
+
+    // Arrange
+    assertThat(result, is(2));
   }
 }
