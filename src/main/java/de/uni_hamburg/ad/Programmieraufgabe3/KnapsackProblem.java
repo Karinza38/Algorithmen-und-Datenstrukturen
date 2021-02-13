@@ -1,4 +1,4 @@
-package de.uni_hamburg.ad.Knapsack;
+package de.uni_hamburg.ad.Programmieraufgabe3;
 
 public class KnapsackProblem {
 

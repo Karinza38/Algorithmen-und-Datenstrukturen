@@ -1,14 +1,9 @@
-package de.uni_hamburg.ad.Knapsack;
+package de.uni_hamburg.ad.Programmieraufgabe3;
 
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
-import java.util.Random;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class KnapsackProblemTest {
   

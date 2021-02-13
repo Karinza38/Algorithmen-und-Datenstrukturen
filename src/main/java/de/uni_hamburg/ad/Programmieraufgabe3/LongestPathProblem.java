@@ -1,7 +1,5 @@
 package de.uni_hamburg.ad.Programmieraufgabe3;
 
-import java.util.ArrayList;
-
 public class LongestPathProblem {
   
   int calc(int N, int[][] A) {
