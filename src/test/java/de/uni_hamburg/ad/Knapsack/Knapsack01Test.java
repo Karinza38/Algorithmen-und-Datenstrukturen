@@ -1,5 +1,6 @@
 package de.uni_hamburg.ad.Knapsack;
 
+import de.uni_hamburg.ad.dp.Knapsack01;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,7 +17,7 @@ class Knapsack01Test
 		var weights = new int[] {2,3,2};
 
 		// Act
-		final var maxValue = (int)Knapsack01.solve(values, weights, 5);
+		final var maxValue = (int) Knapsack01.solve(values, weights, 5);
 
 		// Assert
 		assertThat(maxValue, is(5));

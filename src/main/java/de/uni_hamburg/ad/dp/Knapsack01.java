@@ -1,4 +1,4 @@
-package de.uni_hamburg.ad.Knapsack;
+package de.uni_hamburg.ad.dp;
 
 import lombok.extern.slf4j.Slf4j;
 
