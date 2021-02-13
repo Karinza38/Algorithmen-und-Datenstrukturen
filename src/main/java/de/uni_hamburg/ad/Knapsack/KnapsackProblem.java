@@ -1,8 +1,7 @@
 package de.uni_hamburg.ad.Knapsack;
 
 public class KnapsackProblem {
-  
-  
+
   
   public double knapSack(double[] values, int[] volumes, int capacity) {
     assert values.length == volumes.length;
