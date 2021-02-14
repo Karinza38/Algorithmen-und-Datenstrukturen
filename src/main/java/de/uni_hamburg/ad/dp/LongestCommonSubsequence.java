@@ -1,67 +1,72 @@
 package de.uni_hamburg.ad.dp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
+
+@Slf4j
 public class LongestCommonSubsequence
 {
-	public String solve(String source, String target) {
-		StringBuilder result = new StringBuilder();
-		solveRec(source, target).forEach(result::append);
-		return result.toString();
+	private static boolean debug = false;
+
+	private LongestCommonSubsequence() {
 	}
 
-	private List<Character> solveRec(String source, String target) {
-		// If one of the parts is empty, they can't have anything common left to compare
-		if (source.length() * target.length() == 0) {
-			return new ArrayList<>();
-		}
-		final int endSourceIndex = source.length() - 1;
-		final int endTargetIndex = target.length() - 1;
-		if (source.charAt(endSourceIndex) == target.charAt(endTargetIndex)) {
-			ArrayList<Character> result = new ArrayList<>();
-			result.add(source.charAt(endSourceIndex));
-			List<Character> middle = solveRec(source.substring(0, endSourceIndex), target.substring(0, endTargetIndex));
-			result.addAll(0, middle);
-			return result;
-		}
-		List<Character> leftResult = solveRec(source.substring(0, endSourceIndex), target);
-		List<Character> rightResult = solveRec(source, target.substring(0, endTargetIndex));
-
-		return leftResult.size() > rightResult.size() ? leftResult : rightResult;
+	public static String solve(String x, String y) {
+		LcsMatrix matrix = new LcsMatrix(x, y);
+		return matrix.traceback();
 	}
 
-
-	public String solveDP(String source, String target) {
-		StringBuilder result = new StringBuilder();
-		solveRecDP(source, target, new HashMap<>()).forEach(result::append);
-		return result.toString();
+	static void setDebug(boolean debug) {
+		LongestCommonSubsequence.debug = debug;
 	}
 
-	private List<Character> solveRecDP(String source, String target, HashMap<String, ArrayList<Character>> dp) {
-		// If one of the parts is empty, they can't have anything common left to compare
-		if (source.length() * target.length() == 0) {
-			return new ArrayList<>();
-		}
-		if (dp.containsKey(source+","+target))
-			return dp.get(source+","+target);
+	private static class LcsMatrix {
+		private final String stringX;
+		private final String stringY;
 
-		final int endSourceIndex = source.length() - 1;
-		final int endTargetIndex = target.length() - 1;
-		if (source.charAt(endSourceIndex) == target.charAt(endTargetIndex)) {
-			ArrayList<Character> result = new ArrayList<>();
-			result.add(source.charAt(endSourceIndex));
-			List<Character> middle = solveRec(source.substring(0, endSourceIndex), target.substring(0, endTargetIndex));
-			result.addAll(0, middle);
-			dp.put(source+","+target, result);
-			return result;
-		}
-		List<Character> leftResult = solveRec(source.substring(0, endSourceIndex), target);
-		List<Character> rightResult = solveRec(source, target.substring(0, endTargetIndex));
+		private final int[][] lcsLengths;
 
-		final ArrayList<Character> result = (ArrayList<Character>)(leftResult.size() > rightResult.size() ? leftResult : rightResult);
-		dp.put(source+","+target, result);
-		return result;
+		//Store the lengths of the lcs and trace back to find the lcs
+		LcsMatrix(String x, String y) {
+			stringX = x;
+			stringY = y;
+
+			//Make dimensions one bigger to include the empty string column and row
+			lcsLengths = new int[x.length()+1][y.length()+1];
+			//Take advantage of 0 default for row and column 0
+
+			for(int i = 1; i <= x.length(); i++) {
+				for(int j = 1; j <= y.length(); j++) {
+					if(x.charAt(i-1) == y.charAt(j-1)) {
+						lcsLengths[i][j] = 1 + lcsLengths[i-1][j-1];
+					} else {
+						lcsLengths[i][j] = Math.max(lcsLengths[i-1][j], lcsLengths[i][j-1]);
+					}
+				}
+			}
+			if (debug) Arrays.asList(lcsLengths).forEach(row -> log.info("{}",row));
+		}
+
+		String traceback() {
+			int x = stringX.length();
+			int y = stringY.length();
+
+			StringBuilder result = new StringBuilder();
+
+			//Once we hit the empty string row or column, we should have the subsequence
+			while(x != 0 && y != 0) {
+				if(stringX.charAt(x - 1) == stringY.charAt(y - 1)) {
+					result.append(stringX.charAt(x - 1));
+					x--;
+					y--;
+				} else if(lcsLengths[x-1][y] > lcsLengths[x][y-1]) {
+					x--;
+				} else {
+					y--;
+				}
+			}
+			return result.reverse().toString();
+		}
 	}
 }

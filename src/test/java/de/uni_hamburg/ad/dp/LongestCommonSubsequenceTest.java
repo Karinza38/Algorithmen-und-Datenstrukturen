@@ -1,7 +1,6 @@
 package de.uni_hamburg.ad.dp;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -11,7 +10,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 class LongestCommonSubsequenceTest
 {
 
-	LongestCommonSubsequence lcs = new LongestCommonSubsequence();
+	@BeforeAll
+	public static void setup() {
+		LongestCommonSubsequence.setDebug(false);
+	}
 
 	@ParameterizedTest
 	@CsvSource({",abc,",
@@ -20,7 +22,8 @@ class LongestCommonSubsequenceTest
 			"abcdef,acf,acf",
 			"132535365,123456789,12356",
 			"abcdefghijklmnopq,abcdefghijklmnopq,abcdefghijklmnopq",
-			"nothardlythefinaltest,zzzfinallyzzz,final"})
+			"nothardlythefinaltest,zzzfinallyzzz,final",
+			"lRk3W1I9WxwL8u3l2GA4,3In9qxKcLuN963Yxlvq4,3I9xLu3l4"})
 	void solve_givenEmptySource_thatResultIsAlsoEmpty(String source, String target, String expected) {
 		// Arrange
 		source = source == null ? "" : source;
@@ -28,24 +31,10 @@ class LongestCommonSubsequenceTest
 		expected = expected == null ? "" : expected;
 
 		// Act
-		final String solution = lcs.solve(source, target);
+		final String solution = LongestCommonSubsequence.solve(source, target);
 
 		// Assert
 		assertThat(solution, is(expected));
-	}
-
-	@Test
-	@Disabled("5m 23s 813ms")
-	void solve_givenBigTestCase_thatResultIsCorrect() {
-		// Arrange
-		var source = "lRk3W1I9WxwL8u3l2GA4";
-		var target = "3In9qxKcLuN963Yxlvq4";
-
-		// Act
-		final String solution = lcs.solve(source, target);
-
-		// Assert
-		assertThat(solution, is("3I9xLu3l4"));
 	}
 
 }
