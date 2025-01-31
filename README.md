@@ -1,4 +1,4 @@
-# Algorithmen und Datenstrukturen - Übungsbetrieb
+ # Algorithmen und Datenstrukturen - Übungsbetrieb
 
 Ziel dieses Projekts ist es die in den Übungen entwickelten Algorithmen zu implementieren und zu testen.
 
